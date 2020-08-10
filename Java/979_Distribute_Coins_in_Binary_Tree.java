@@ -12,6 +12,7 @@ class Solution {
         int right = dfs(root.right);
         moves += Math.abs(left) + Math.abs(right);
         return root.val + left + right - 1;
+        // 其中的(root.val - 1)指去掉它自身需要一个coin
     }
 }
 //faster than 100.00% of Java

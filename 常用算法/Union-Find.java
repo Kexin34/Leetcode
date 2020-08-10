@@ -1,19 +1,14 @@
 class UF {
-	// 记录连通分量
-	private int count;
-	// 节点 x 的节点是 parent[x]
-	private int[] parent;
-	// 新增一个数组记录树的“重量”, 小一些的树接到大一些的树下面
-    private int[] size;
+	
+	private int count;             // 记录连通分量
+	private int[] parent;          // 节点 x 的根节点是 parent[x]
+    private int[] size;            // 新增一个数组记录树的“重量”, 小一些的树接到大一些的树下面
 
 	/* 构造函数，n 为图的节点总数 */
 	public UF(int n){
-		// 一开始互不连通
-		this.count = n;
-		// 父节点指针初始指向自己
-		parent = new int[n];
-		// 最初每棵树只有一个节点, size重量应该初始化 1
-		size = new int[n];
+		this.count = n;           // 一开始互不连通
+		parent = new int[n];      // 父节点指针初始指向自己         
+		size = new int[n];        // 最初每棵树只有一个节点, size重量应该初始化 1
 
 		for(int i = 0; i < n; i++){
 			parent[i] = i;
@@ -21,7 +16,7 @@ class UF {
 		}
 	}
 
-    /* 将 p 和 q 连接 */
+    /* union函数: 将 p 和 q 连接 */
     public void union(int p, int q){
     	int rootP = find(p);
     	int rootQ = find(q);
@@ -39,7 +34,7 @@ class UF {
  		count--; // 两个分量合二为一
     }
 
-    /* 返回某个节点 x 的根节点, 路径压缩过的写法 */
+    /* find函数: 返回某个节点 x 的根节点, 路径压缩过的写法 */
     private int find(int x){
     	// 根节点的 parent[x] == x
     	while(parent[x] != x){
@@ -55,7 +50,7 @@ class UF {
     	return count;
     }
 
-    /* 判断 p 和 q 是否连通 */
+    /* connected函数：判断 p 和 q 是否连通 */
     public boolean connected(int p, int q){
     	int rootP = find(p);
     	int rootQ = find(q);

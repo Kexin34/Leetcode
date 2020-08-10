@@ -7,50 +7,51 @@
 //然后再对图做一个 BFS，因为此时所有的节点已经创建了，只需要更新所有节点的 neighbors。
 class Solution {
     public Node cloneGraph(Node node) {
-        if(node == null) return null;
+        if (node == null) return null;
         
-        /* 第一次BFS, 把所有节点new出来，不处理neighbors,并把所有的节点存到map中 */
-        Queue<Node> queue = new LinkedList<>();
-        Map<Integer, Node> map = new HashMap<>();
+        // First BFS
+        Queue<Node> queue = new LinkedList<Node>();
+        Map<Integer, Node> map = new HashMap<>();  // <node's value, node>
         Set<Integer> visited = new HashSet<>();
         
         queue.offer(node);
         visited.add(node.val);
-        while(!queue.isEmpty()){
-            Node cur = queue.poll();
-            //生成每一个节点
-            Node n = new Node();
-            n.val = cur.val;
-            n.neighbors = new ArrayList<Node>();
-            map.put(n.val, n);  //节点存到map中
 
-            /* BFS会把现节点邻居全部压入queue中,用于之后dequeue遍历 */
-            for(Node temp : cur.neighbors){      
-                if(visited.contains(temp.val))
+        while (!queue.isEmpty()){
+            Node cur = queue.poll();
+            //生成每一个copy的节点(deep copy)
+            Node copied = new Node();
+            copied.val = cur.val;
+            copied.neighbors = new ArrayList<>();
+            map.put(copied.val, copied);
+            
+            /* BFS会把现节点(未访问过的）邻居全部压入queue中,用于之后dequeue遍历 */
+            for (Node neighbor : cur.neighbors){
+                if (visited.contains(neighbor.val))
                     continue;
-                queue.offer(temp);
-                visited.add(temp.val);
+                queue.offer(neighbor);
+                visited.add(neighbor.val);
             }
         }
         
-        /* 第二次 BFS,更新所有节点的 neightbors */
-        queue = new LinkedList<>();
-        queue.offer(node);
+        // Second BFS
+        queue = new LinkedList<Node>();
         visited = new HashSet<>();
+        queue.offer(node);
         visited.add(node.val);
         
-        while(!queue.isEmpty()){
+        while (!queue.isEmpty()){
             Node cur = queue.poll();
             /* 更新新节点的neightbors */
-            for(Node temp : cur.neighbors)
-                map.get(cur.val).neighbors.add(map.get(temp.val));
-
+            for (Node neighbor : cur.neighbors)
+                map.get(cur.val).neighbors.add(map.get(neighbor.val));
+                
             /* 把原节点邻居全部压入queue中之后遍历 */
-            for(Node temp : cur.neighbors){
-                if(visited.contains(temp.val))
+            for (Node neighbor : cur.neighbors){
+                if (visited.contains(neighbor.val))
                     continue;
-                queue.offer(temp);
-                visited.add(temp.val);
+                queue.offer(neighbor);
+                visited.add(neighbor.val);
             }
         }
         return map.get(node.val);
@@ -61,33 +62,35 @@ class Solution {
 // 优化BFS，只需要一次遍历
 class Solution {
     public Node cloneGraph(Node node) {
-        if(node == null) return null;
+        if (node == null) return null;
         
         Queue<Node> queue = new LinkedList<>();
-        Map<Integer, Node> map = new HashMap<>();
+        Map<Integer, Node> map = new HashMap<>();  // <node's value, node>
+        
         queue.offer(node);
-        //先生成第一个节点
+        //先copy生成第一个节点,并放入map
         Node n = new Node();
         n.val = node.val;
         map.put(n.val, n);
-        
-        while(!queue.isEmpty()){
+
+        while (!queue.isEmpty()){
             Node cur = queue.poll();
-            for(Node temp : cur.neighbors){
+            for (Node temp : cur.neighbors){
                 //若没有生成的节点，就生成并放入map
-                if(!map.containsKey(temp.val)){
+                if (!map.containsKey(temp.val)){
                     n = new Node(temp.val);
-                    n.neighbors = new ArrayList<Node>();
+                    n.neighbors = new ArrayList<>();
                     map.put(n.val, n);
-                    queue.offer(temp);
+                    queue.offer(temp);  //注意，压入的是原链的邻居节点
                 }
-                //更新目前新node的邻居(邻居也是新链的node)
+                //更新目前新链node的邻居(邻居也是新链的node)
                 map.get(cur.val).neighbors.add(map.get(temp.val));
             }
         }
         return map.get(node.val);
     }
 }
+// faster than 96.80% of Java
 
 // DFS 解法，好理解
 class Solution {

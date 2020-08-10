@@ -26,7 +26,7 @@ class Solution {
                 k = 0; // reset
             }
             else if (ch == ']'){
-                // 新的[]里面string放入tmp
+                // 新的[]里面string放入tmp, cur变回原来建好的string，一个个往后面append
                 StringBuilder tmp = cur;
                 cur = strStack.pop();
                 for (k = intStack.pop(); k > 0; --k)
