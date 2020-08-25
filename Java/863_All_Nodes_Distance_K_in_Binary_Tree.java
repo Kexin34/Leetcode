@@ -57,7 +57,6 @@ class Solution {
     
     public List<Integer> distanceK(TreeNode root, TreeNode target, int K) {
         List<Integer> res = new ArrayList<Integer>();
-        if (root == null || K < 0) return res;
         buildMap(root, null);          // 建好邻接链表
         if (!map.containsKey(target)) return res;// 如果target不在图里
         

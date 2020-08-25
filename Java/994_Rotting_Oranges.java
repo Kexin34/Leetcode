@@ -4,7 +4,6 @@ class Solution {
     int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
     
     public int orangesRotting(int[][] grid) {
-        if (grid == null || grid.length == 0) return -1;
         int rows = grid.length;
         int cols = grid[0].length;
         Queue<int[]> queue = new LinkedList<>(); // int[] = i, j location
@@ -65,7 +64,6 @@ class Solution {
     int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
     
     public int orangesRotting(int[][] grid) {
-        if (grid == null || grid.length == 0) return -1;
         int rows = grid.length;
         int cols = grid[0].length;
         Queue<Integer> queue = new LinkedList<>(); 

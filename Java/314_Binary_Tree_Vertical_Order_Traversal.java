@@ -16,7 +16,7 @@ class Solution {
         
         while (!queue.isEmpty()){
             TreeNode node = queue.poll();
-            int col = cols.poll();//这个node对应的深度
+            int col = cols.poll();//这个node对应的col
             //看看哈希表有没有这个col的bucket
             if (!map.containsKey(col))
                 map.put(col, new ArrayList<Integer>());

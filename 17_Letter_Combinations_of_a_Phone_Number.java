@@ -25,12 +25,17 @@ class Solution {
             combinations.add(prefix.toString()); // 本轮dfs结束，把这条path添加到ans中
             return;
         }
+        // 找到现在要检查的数字（prefix长度就是现在要检查的index）
         int curDigit = digits.charAt(prefix.length()) - '0';// ascii -> digit
         
-        String letters = key[curDigit];                 //本数字所对应的字母们
-        for (char c : letters.toCharArray()){           // 遍历所有现数字对应字母
+        // 通过 digits 中的数字到 dict 中取出所对应的字符串
+        String letters = key[curDigit];                 
+
+        //遍历这个取出的字符串，将每个字符都加到当前的组合后面，并调用递归函数
+        for (char c : letters.toCharArray()){           
             prefix.append(c);                           //向在测试递归链添加字母
             dfs(digits, prefix, combinations);
+            // 重点：
             // 在递归返回时，需要将元素标记为未访问，因为只需要保证在一个递归链中不同时访问一个元素
             // 可以访问已经访问过但是不在当前递归链中的元素
             prefix.deleteCharAt(prefix.length() - 1);         //递归返回时，在递归链中删除最末字母
@@ -38,6 +43,8 @@ class Solution {
     }
 }
 // faster than 85.55% of Java
+
+
 
 // BFS (无需回溯)
 class Solution {

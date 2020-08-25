@@ -1,4 +1,40 @@
-// 最基础solution： 用Stack 和 String Builder
+// 解法一：计算最后有多少个' ( '是开放的, 最后有多少个 ')' 剩下
+class Solution {
+    public String minRemoveToMakeValid(String s) {
+        int close = 0, open = 0;
+        StringBuilder ans = new StringBuilder();
+        
+        // 计算出整个')'的数量，放入close
+        for (int i = 0; i < s.length(); i++){
+            if (s.charAt(i) == ')') close++;
+        }
+        // 
+        for (int i = 0; i < s.length(); i++){
+            char c = s.charAt(i);
+            
+            if (c == '('){
+                if (open == close) //（不能再匹配close了），跳过'('
+                    continue;
+                open++;
+            }else if (c == ')') {
+                close--;
+                if (open == 0) //(前面没有对应的open，跳过本')'
+                    continue;
+                open--;
+            }
+            ans.append(c);  
+        }
+        return ans.toString();
+    }
+}
+// faster than 96.53% of Java
+// Time complexity: O(n)
+// Space complexity: O(1)
+
+
+
+
+// 解法二： 用Stack 和 String Builder
 // 两步：
 // 1. Identify all indexes that should be removed.
 // 2. Build a new string with removed indexes.
