@@ -6,8 +6,9 @@
 */
 class Solution {    
     public List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections) {
+        List<List<Integer>> results = new ArrayList<>();
         List<Integer>[] graph = new ArrayList[n];
-        for (int i = 0; i < n; i++)//graph中每个元素node都是一个list,存放和这node相连的node
+        for (int i = 0; i < n; i++) //graph中每个元素node都是一个list,存放和这node相连的node
             graph[i] = new ArrayList<>();
         // 建表
         for (List<Integer> oneConnection : connections){
@@ -16,30 +17,31 @@ class Solution {
         }
         
         int timer = 0;
-        List<List<Integer>> results = new ArrayList<>();
         boolean[] visited = new boolean[n];
         //就是每个node的lowId
-        int [] timeStampAtThatNode = new int[n];
-        DFS(graph, -1, 0, timer, visited, results, timeStampAtThatNode);
+        int [] timeStamp = new int[n];
+        DFS(graph, -1, 0, timer, visited, results, timeStamp);
         return results;
     }
     
     public void DFS(List<Integer>[] graph, int parent, int node, int timer, boolean[]
-                                       visited, List<List<Integer>> results, int[] timeStampAtThatNode){
+                                       visited, List<List<Integer>> results, int[] timeStamp){
         // 访问本node
         visited[node] = true;
-        timeStampAtThatNode[node] = timer++;
-        int currentTimeStamp = timeStampAtThatNode[node];
+        timeStamp[node] = timer++;
+        int currentTimeStamp = timeStamp[node];
         
-        // 对于本node的每个邻接点
+        // 遍历本node的每个邻接点进行dfs
         for (int neighbour : graph[node]){
             if (neighbour == parent) continue; //忽略掉parent
             if (!visited[neighbour])
-                DFS(graph, node, neighbour, timer, visited, results, timeStampAtThatNode);
-            // DFS callback结束，开始算本node的min
-            timeStampAtThatNode[node] = Math.min(timeStampAtThatNode[node], timeStampAtThatNode[neighbour]);
-            // 检查有无cycle
-            if (currentTimeStamp < timeStampAtThatNode[neighbour])
+                DFS(graph, node, neighbour, timer, visited, results, timeStamp);
+
+            // DFS callback结束，开始算本node的最小时间戳
+            timeStamp[node] = Math.min(timeStamp[node], timeStamp[neighbour]);
+
+            // 如果更新的邻接点时间戳大于原本时间戳，说明是从本node过去的，没有cycle
+            if (currentTimeStamp < timeStamp[neighbour])
                 // 说明不是cycle是critical connection，加入答案
                 results.add(Arrays.asList(node, neighbour));
             
@@ -47,5 +49,5 @@ class Solution {
     }
 }
 
-// faster than 26.59% of Java
+// faster than 82.02% of Java 
 

@@ -15,9 +15,11 @@ class Solution {
         while (!queue.isEmpty()){
             steps++;
             // 遍历本层所有node
-            for (int s = queue.size(); s > 0; --s){
+            int size = queue.size();
+            for (int s = 0; s < size; s++){
                 String word = queue.poll();
                 char[] chs = word.toCharArray();
+
                 // 对本word的每个字母都进行26字母替换
                 for (int i = 0; i < wordLen; ++i){
                     char ch = chs[i];   // 将要被替换的字母+位置
@@ -39,6 +41,8 @@ class Solution {
     }
 }
 // faster than 68.69% of Java
+
+
 
 // Bidirectional Breadth First Search
 class Solution {
@@ -62,10 +66,10 @@ class Solution {
                 q1 = q2;
                 q2 = tmp;
             }
-            Set<String> q = new HashSet<>();
+            Set<String> nextSet = new HashSet<>();//保存下一次要展开检查的word
             for (String word : q1){       // 遍历本层所有node
-                // 对本word的每个字母都进行26字母替换
                 char[] chs = word.toCharArray();
+                // 对本word的每个字母都进行26字母替换
                 for (int i = 0; i < woedLen; ++i){
                     char ch = chs[i];       // 将要被替换的字母
                     for (char c = 'a'; c <= 'z'; ++c){
@@ -80,10 +84,10 @@ class Solution {
                     chs[i] = ch;        //为防止有环，删掉字典里访问了的word
                 }
             }
-            q1 = q;     // 下一层BFS
+            q1 = nextSet;     // 下一层BFS
         }
         return 0;
     }
 }
-// faster than 90.78% of Java 
+// faster than 99.03% of Java
      

@@ -45,7 +45,6 @@ class Solution {
         
         int interval = 1;
         while(interval < lists.length){
-            System.out.println(lists.length);
             // 每层两两合并
             for(int i = 0; i + interval < lists.length; i += interval * 2)
                 lists[i] = mergeTwoLists(lists[i], lists[i + interval]);
@@ -59,3 +58,44 @@ class Solution {
     }
 }
 //faster than 81.64% of Java
+
+
+
+// 解法三：优先队列
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        if (lists.length == 0) return null;
+        if (lists.length == 1) return lists[0];
+        
+        //定义优先队列的比较器,优先级定义为数越小优先级越高
+        Comparator<ListNode> cmp;
+        cmp = new Comparator<ListNode>(){
+            @Override
+            public int compare(ListNode n1, ListNode n2){
+                return n1.val - n2.val;
+            }
+        };
+        
+        //建立优先队列，按照链表头节点大小排入pq
+        Queue<ListNode> pq = new PriorityQueue<ListNode>(cmp);
+        for (ListNode l : lists)
+            if (l != null) pq.add(l);
+        
+        // 建立result链表头
+        ListNode dummy = new ListNode(-1);
+        ListNode cur = dummy;
+        
+        while (!pq.isEmpty()){  
+            //出队列
+            cur.next = pq.poll();
+            cur = cur.next;
+            //判断当前poll出的链表是否为空，不为空就重新将其再次入队
+            ListNode next = cur.next;
+            if (next != null) pq.add(next);
+        }
+        return dummy.next;
+    }
+}
+
+
+

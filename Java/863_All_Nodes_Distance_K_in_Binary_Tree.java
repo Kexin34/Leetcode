@@ -32,14 +32,14 @@ class Solution {
         return -1;
     }
     
-    private void dfs(TreeNode root, TreeNode target, int K, int length, List<Integer>res){
+    private void dfs(TreeNode root, TreeNode target, int K, int depth, List<Integer>res){
         if (root == null) return;
         if (map.containsKey(root)) 
-            length = map.get(root);
-        if (length == K)         // 找到距离目标为K的节点，存入答案
+            depth = map.get(root);
+        if (depth == K)         // 找到距离目标为K的节点，存入答案
             res.add(root.val);      
-        dfs(root.left, target, K, length + 1, res);
-        dfs(root.right, target, K, length + 1, res);
+        dfs(root.left, target, K, depth + 1, res);
+        dfs(root.right, target, K, depth + 1, res);
     }
 }
 //faster than 100.00% of Jav

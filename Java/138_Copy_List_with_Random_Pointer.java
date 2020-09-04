@@ -82,7 +82,45 @@ class Solution {
 
 
 
-
+// Follow-up：空间限制
+class Solution {
+    public Node copyRandomList(Node head) {
+        if (head == null) return null;
+        Node c = head;
+        
+        // First round: make copy of each node,
+        // and link them together side-by-side in a single list.
+        while (c != null){
+            Node next = c.next; //指向原c下一个node
+            c.next = new Node(c.val);
+            c.next.next = next;
+            c = c.next.next; 
+        }
+        
+        // Second round: assign random pointers for the copy nodes.
+        c = head;
+        while (c != null){
+            if (c.random != null)
+                c.next.random = c.random.next;//重点
+            c = c.next.next;
+        }
+        
+        // Third round: restore the original list, and extract the copy list.
+        c = head;
+        Node copyHead = c.next;
+        Node copy = copyHead;
+        while (copy.next != null){
+            c.next = c.next.next;
+            c = c.next;
+            copy.next = copy.next.next;
+            copy = copy.next;
+        }
+        c.next = null;
+        
+        return copyHead;
+    }
+}
+// faster than 100.00% of Java 
 
 
 

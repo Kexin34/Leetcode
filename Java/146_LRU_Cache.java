@@ -1,7 +1,9 @@
 // Sourse: https://leetcode.com/problems/lru-cache/
 
 class LRUCache {
-    private Map<Integer, Node> cache;// 映射到 Node(key, val)
+    // 自己设定这个class有些什么元素（构建要用this指代）
+    // 哈希表cache，双向链表list，容量capacity
+    private Map<Integer, Node> cache;// 映射到 Node(key#, Node(key,val))
     private DoublyLinkedList list;
     private int capacity;
     
@@ -20,7 +22,6 @@ class LRUCache {
         // Update, 利用 put 方法把该数据提前
         list.remove(n);
         list.insertHead(n);//mdouble linklist 更新顺序
-        cache.put(key, n);
         return val;
     }
     
@@ -36,11 +37,11 @@ class LRUCache {
         }
         // 直接添加到头部
         list.insertHead(n);
-        cache.put(key,n);
+        cache.put(key, n);
     }     
 }
 
-//双链表的节点类
+// 双向链表的Node类, 比起普通node多一个prev指针
 class Node {
     int value, key;
     Node prev, next;
@@ -54,7 +55,9 @@ class Node {
     }
 }
 
-//依靠Node类型构建一个双链表，实现几个需要的 API
+/* 双向链表class
+ * 构造函数，API：在头部插入节点，删除尾部节点，删除第n个节点
+*/
 class DoublyLinkedList {  
     Node head;
     Node tail;
@@ -80,6 +83,7 @@ class DoublyLinkedList {
     }
     
     // 删除链表中最后一个节点，并返回该节点的value，时间 O(1)
+    // 要返回key值是因为cache需要key来删除所映射的node
     public int removeTail(){
         Node n = tail.prev;
         int key = n.key;

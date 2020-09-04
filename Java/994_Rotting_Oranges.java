@@ -59,7 +59,56 @@ class Solution {
 
 
 // BFS优化 queue存的是一维， 更好理解,， 本质一样
-// faster than 47.38% of Java 
+class Solution {
+    int[][] dirs = {{1, 0}, {-1, 0}, {0, -1}, {0, 1}};
+    
+    public int orangesRotting(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        Queue<Integer> queue = new LinkedList<>();
+        int count_fresh = 0;        // 用于最后看是否减少为0
+        
+        for (int i = 0; i < m; i++){
+            for (int j = 0; j < n; j++){
+                if (grid[i][j] == 2)
+                    queue.offer(i * n + j);
+                else if (grid[i][j] == 1)
+                    count_fresh++;
+            }
+        }
+        if (count_fresh == 0) return 0;
+        
+        int time = 0;
+        while (!queue.isEmpty()){
+            time++;
+            int size = queue.size();
+            for (int i = 0; i < size; i++){
+                int cur = queue.poll();
+                for (int[] dir : dirs){
+                    int r = cur / n + dir[0];
+                    int c = cur % n + dir[1];
+                    if (r < 0 || r >= m || c < 0 || c >= n || 
+                        grid[r][c] == 0 || grid[r][c] == 2)
+                        continue;
+                    grid[r][c] = 2;
+                    queue.offer(r * n + c);
+                    count_fresh--;
+                }
+            }
+            
+        }
+        return count_fresh == 0 ? time - 1 : -1;
+    }
+}
+//  faster than 73.35% of Java
+
+
+
+
+
+
+
+// 类似解法二，效率一样
 class Solution {
     int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
     

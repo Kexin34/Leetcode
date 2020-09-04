@@ -21,21 +21,23 @@ class Solution {
 //Approach 2: Iteration
 class Solution {
     public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-        ListNode prehead = new ListNode(-1);    // 哨兵节点
-        ListNode dummy = prehead;
-        while(l1 != null && l2 != null){
-            if(l1.val > l2.val){
-                dummy.next = new ListNode(l2.val);
-                l2 = l2.next;  
-            }else{
-                dummy.next = new ListNode(l1.val);
+        ListNode dummy = new ListNode(-1);
+        ListNode cur = dummy;
+        while (l1 != null && l2 != null){
+            if (l1.val <= l2.val){
+                cur.next = new ListNode(l1.val);
                 l1 = l1.next;
             }
-            dummy = dummy.next;
+            else{
+                cur.next = new ListNode(l2.val);
+                l2 = l2.next;
+            }
+            cur = cur.next;
         }
         // exactly one of l1 and l2 can be non-null at this point
         // the non-null list to the end of the merged list.
-        dummy.next = l1 == null ? l2 : l1;
-        return prehead.next;
+        cur.next = l1 == null ? l2 : l1;
+        return dummy.next;
     }
 }
+// faster than 43.33% of Java

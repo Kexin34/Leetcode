@@ -1,22 +1,27 @@
 // 暴力算法
-int trap(vector<int>& height) {
-    int n = height.size();
-    int ans = 0;
-    for (int i = 1; i < n - 1; i++) {
-        int l_max = 0, r_max = 0;
-        // 找右边最高的柱子
-        for (int j = i; j < n; j++)
-            r_max = max(r_max, height[j]);
-        // 找左边最高的柱子
-        for (int j = i; j >= 0; j--)
-            l_max = max(l_max, height[j]);
-        // 如果自己就是最高的话，
-        // l_max == r_max == height[i]
-        ans += min(l_max, r_max) - height[i];
+class Solution {
+    public int trap(int[] height) {
+        if(height.length == 0) return 0;
+        int n = height.length;
+        int res = 0;
+        
+        for (int i = 1; i < n - 1; i++){
+            int l_max = 0, r_max = 0;
+            // 找左边最高的柱子
+            for (int j = i; j >= 0; j--)
+                l_max = Math.max(l_max, height[j]);
+            // 找右边最高的柱子
+            for (int j = i; j < n; j++)
+                r_max = Math.max(r_max, height[j]);
+            // 如果自己就是最高的话，
+            // l_max == r_max == height[i]
+            res += Math.min(l_max, r_max) - height[i];
+        }
+        return res;
     }
-    return ans;
 }
-// 时间复杂度 O(N^2)，空间复杂度 O(1)。
+// 时间复杂度 O(N^2)，空间复杂度 O(1)
+// faster than 6.85% of Java
 
 
 // 优化Mrthod 1: 备忘录优化

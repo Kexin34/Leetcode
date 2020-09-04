@@ -37,22 +37,22 @@ class Solution {
     public String longestPalindrome(String s) {
         int len = s.length();
         if (len < 2) return s;
+        
         String ans = "";
         int maxLen = 0;
-        
         boolean[][] dp = new boolean[len][len];
-        for (int j = 0; j < len; j++){
-            for (int i = 0; i <= j; i++){
-                boolean equal = (s.charAt(i) == s.charAt(j));
-                
+        
+        for (int i = len - 1; i >= 0; i--) {
+            for (int j = i; j < len; j++) {
+                boolean equ = (s.charAt(i) == s.charAt(j));
                 if (j - i > 2)
-                    dp[i][j] = equal && dp[i + 1][j - 1];
+                    dp[i][j] = equ && dp[i + 1][j - 1];
                 else
-                    dp[i][j] = equal;
+                    dp[i][j] = equ;
                 
                 //如果i到j是合法串，对比是否超过maxLen,是的话更新长度&答案
-                if (dp[i][j] && (j - i + 1) > maxLen){ 
-                    maxLen = j - i + 1; //  index相减再+1才为长度
+                if (dp[i][j] && (j - i + 1) > maxLen){
+                    maxLen = j - i + 1;         // index相减再+1才为长度
                     ans = s.substring(i, j + 1);//+1因为要包括j index元素
                 }
             }
@@ -60,5 +60,6 @@ class Solution {
         return ans;
     }
 }
+
 // faster than 27.45% of Java 
 

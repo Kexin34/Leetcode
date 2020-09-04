@@ -21,10 +21,11 @@ class Solution {
     public int dfs(int[][] grid, int r, int c){
         if (r < 0 || r >= m || c < 0 || c >= n || grid[r][c] == 0) return 0;
         grid[r][c] = 0;
-        int area = 1; // 把本cell算进去
+        int area = 0; 
+        
         for (int[] dir : dirs)
             area += dfs(grid, r + dir[0], c + dir[1]);
-        return area;
+        return area + 1;// 把本cell算进去
     }
 }
-// faster than 64.68% of Java
+// faster than 99.73% of Java

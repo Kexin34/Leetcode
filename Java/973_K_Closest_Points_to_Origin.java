@@ -51,8 +51,7 @@ class Solution {
         int[] pivot = A[l];
         while (l < r){
             // 比pivot大的point element都跑去右边
-            while (l < r && compare(A[r], pivot) >= 0) 
-                r--;
+            while (l < r && compare(A[r], pivot) >= 0) r--;
             A[l] = A[r];
             // 把比pivot小的point element都跑去左边
             while (l < r && compare(A[l], pivot) <= 0) l++;
@@ -66,4 +65,6 @@ class Solution {
         return p1[0] * p1[0] + p1[1] * p1[1] - p2[0] * p2[0] - p2[1] * p2[1];
     }
 }
-// faster than 92.69% of Java
+// faster than 99.43% of Java
+// Time complexity: O(nlogn)
+// Space complexity: O(n)

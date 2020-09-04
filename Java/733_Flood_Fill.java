@@ -26,34 +26,31 @@ class Solution {
 class Solution {
     public int[][] floodFill(int[][] image, int sr, int sc, int newColor) {
         if (image[sr][sc] == newColor) return image;
+        
         int[][] dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
         int m = image.length;
         int n = image[0].length;
         int originColor = image[sr][sc];
-        image[sr][sc] = newColor;               //重要，缺少这行会错
-
-        Queue<Cell> queue = new LinkedList<>();
-        queue.offer(new Cell(sr, sc));
-                   
+        
+        image[sr][sc] = newColor;       // 连续两次漏了最关键一行！
+        Queue<int[]> queue = new LinkedList<>();
+        queue.offer(new int[]{sr, sc});
+        
         while (!queue.isEmpty()){
-            Cell cur = queue.poll();
+            int[] cur = queue.poll();
             for (int[] dir : dirs){
-                Cell next = new Cell(cur.r + dir[0], cur.c + dir[1]);
-                if (next.r < 0 || next.r >= m || next.c < 0 || next.c >= n 
-                    || image[next.r][next.c] != originColor)
+                int newR = cur[0] + dir[0];
+                int newC = cur[1] + dir[1];
+                if (newR < 0 || newR >= m || newC < 0 || newC >= n 
+                    || image[newR][newC] != originColor)
                     continue;
-                image[next.r][next.c] = newColor;
-                queue.offer(next);
+                image[newR][newC] = newColor;
+                queue.offer(new int[] {newR, newC});
             }
         }
         return image;
     }
-    
-    class Cell {
-        int r, c;
-        public Cell(int r, int c) { this.r = r; this.c = c; }
-    }
-}
+} 
 // faster than 69.98% of Java
 
 

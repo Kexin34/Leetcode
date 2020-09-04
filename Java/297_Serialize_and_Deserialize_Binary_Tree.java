@@ -3,7 +3,7 @@ public class Codec {
     // Encodes a tree to a single string.BFS层次遍历来序列化
     public String serialize(TreeNode root) {
         if (root == null) return "";
-        //BFS层次遍历
+        // BFS层次遍历
         Queue<TreeNode> queue = new LinkedList<TreeNode>();
         List<Integer> res = new LinkedList<Integer>();
         queue.offer(root);
@@ -34,25 +34,23 @@ public class Codec {
     public TreeNode deserialize(String data) {
         if(data.length() == 0) return null;
         
-        //将字符串string还原为数组array
+        //先将字符串string还原为数组string array，再转化成int array
         String[] preStr = data.substring(1, data.length() - 1).split(",");
         Integer[] bfsOrder = new Integer[preStr.length];
         for (int i = 0; i < preStr.length; i++) {
-            if (preStr[i].trim().equals("null")) {
+            if (preStr[i].trim().equals("null"))    // trim掉逗号
                 bfsOrder[i] = null;
-            } else {
+            else 
                 bfsOrder[i] = Integer.parseInt(preStr[i].trim());
-            }
         }
         
-        //通过BFS来层次遍历->还原二叉树
+        //通过BFS来层次遍历 -> 还原二叉树
         Queue<TreeNode> queue = new LinkedList<TreeNode>();
         TreeNode root = new TreeNode(bfsOrder[0]);
-        int cur = 1;    //通过 cur 指针依次给节点赋值
+        int cur = 1;                //通过 cur index指针依次给节点赋值
         queue.offer(root);
         while(!queue.isEmpty()){
-            if (cur == bfsOrder.length) 
-                break;
+            if (cur == bfsOrder.length) break;
             
             TreeNode curNode = queue.poll();
             if(bfsOrder[cur] != null){//说明本node有左子node
@@ -61,8 +59,7 @@ public class Codec {
             }
             cur++;
             
-            if (cur == bfsOrder.length) 
-                break;
+            if (cur == bfsOrder.length) break;
             
             if(bfsOrder[cur] != null){//说明本node有右子node
                 curNode.right = new TreeNode(bfsOrder[cur]);
