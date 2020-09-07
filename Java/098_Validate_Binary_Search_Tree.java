@@ -1,5 +1,5 @@
 // Solution#1: using min/max range to check the node value
-// Recursion
+// 递归法，判断左 MAX < 根 < 右 MIN
 class Solution {
     public boolean isValidBST(TreeNode root) {
         if (root == null) return true;
@@ -8,6 +8,7 @@ class Solution {
     
     public boolean isValidBST(TreeNode node, Integer min, Integer max){
         if (node == null) return true; //base case: when the node has no child node
+
         // compare the node value with lower/upper limit
         if ((min != null && node.val <= min) || 
             (max != null && node.val >= max))
@@ -18,42 +19,15 @@ class Solution {
 }
 //  faster than 100% of Java
 
-//Interation mathod, using BFS stack  
-class Solution {
-    LinkedList<TreeNode> stack = new LinkedList<>();
-    LinkedList<Integer> uppers = new LinkedList<>();
-    LinkedList<Integer> lowers = new LinkedList<>();
-    
-    public boolean isValidBST(TreeNode root) {
-        Integer lower = null, upper = null;
-        update(root, lower, upper);
-        
-        while (!stack.isEmpty()){
-            TreeNode node = stack.poll();
-            lower = lowers.poll();
-            upper = uppers.poll();
-            if (node == null) continue;
-            
-            if ((lower != null && node.val <= lower) || 
-                (upper != null && node.val >= upper))
-                return false;
-            update(node.right, node.val, upper);
-            update(node.left, lower, node.val);
-        }
-        return true;
-    }
-    
-    public void update(TreeNode node, Integer lower, Integer upper){
-        stack.add(node);
-        uppers.add(upper);
-        lowers.add(lower);
-    }
-}
-//faster than 7.64% of Java 
 
-// solution #2 : In-order traversal, check if the current node > previous node (if sorted)
+
+
+// solution #2 : 递归版-中序遍历, check if the current node > previous node (if sorted)
+// 中序遍历，如果中序遍历得到的节点的值小于等于前一个 preVal，说明不是二叉搜索树
+
 class Solution {
     private TreeNode prev;
+
     public boolean isValidBST(TreeNode root) {
         prev = null;
         return inOrder(root);
@@ -75,5 +49,35 @@ class Solution {
     }
 }
 //faster than 100.00% of Java
+
+
+
+
+//解法三： 中序遍历, using BFS stack (用queue模仿stack)
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        Deque<TreeNode> stack = new LinkedList<>();
+        double preVal = - Double.MAX_VALUE;
+        TreeNode node = root;
+        
+        while (!stack.isEmpty() || node != null){
+            // 左
+            while (node != null){
+                stack.offerFirst(node);
+                node = node.left;
+            }
+
+            node = stack.pollFirst();
+            // 如果中序遍历得到的节点的值小于等于前一个 preVal，说明不是二叉搜索树
+            if (node.val <= preVal) return false;
+            preVal = node.val;
+
+            // 处理右子树
+            node = node.right;
+        }
+        return true;
+    }
+}
+//  faster than 46.18% of Java 
 
 

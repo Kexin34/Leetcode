@@ -29,40 +29,33 @@ class Solution {
 //Space complexity : O(N) to keep the output structure which contains N node values.
 
 
+
 // 遍历解法 (BFS using queue) （和递归里面同样处理思路）
+// 思路：用一个队列记录一层的元素，然后扫描这一层元素添加下一层元素到队列（一个数进去出来一次，所以复杂度 O(logN)）
 class Solution {
     public List<List<Integer>> levelOrder(TreeNode root) {
-        List<List<Integer>> levels = new ArrayList<List<Integer>>();
-        if(root == null) return levels;
+        List<List<Integer>> res = new ArrayList<>();
+        if (root == null) return res;
         
-        Queue<TreeNode> queue = new LinkedList<TreeNode>();
-        queue.add(root);
-        int level = 0;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
         
-        // start BFS
-        while(!queue.isEmpty()){
-            // start the current level
-            levels.add(new ArrayList<Integer>());
+        while (!queue.isEmpty()){
+            int size = queue.size();
+            List<Integer> list = new ArrayList<>();
             
-            // number of elements in the current level
-            int level_length = queue.size();//这层有多少个node
-            for(int i = 0; i < level_length; i++){
-                TreeNode node = queue.remove();
-                
-                // fill the current level
-                levels.get(level).add(node.val);
-                
-                // push child nodes of the current level to queue for next level
-                if(node.left != null) 
-                    queue.add(node.left);
-                if(node.right != null)
-                    queue.add(node.right);
+            for (int i = 0; i < size; i++){
+                TreeNode node = queue.poll();
+                list.add(node.val);
+                if (node.left != null) queue.offer(node.left);
+                if (node.right != null) queue.offer(node.right);
             }
-            level++;    // go to next level
+            res.add(list);
         }
-        return levels;
+        return res;
     }
 }
-// faster than 60.04% of Java
+//faster than 100.00% of Java
+
 //Time complexity : O(N) since each node is processed exactly once.
 //Space complexity : O(N) to keep the output structure which contains N node values.

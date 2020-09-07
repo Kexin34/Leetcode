@@ -19,7 +19,8 @@ class Solution {
 // Time complexity: O(n)
 // Space complexity: O(n)
 
-// 递归
+
+// 解法：DFS递归（从上往下）
 class Solution {
     public List<Integer> preorderTraversal(TreeNode root) {
         List<Integer> result = new LinkedList<Integer>();
@@ -37,3 +38,31 @@ class Solution {
 // 100%
 // Time complexity: O(n)
 // Space complexity: O(n)
+
+
+// DFS 深度搜索-从下向上（分治法）
+class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        if (root == null) return new LinkedList<>();
+        return divideAndConquer(root);
+    }
+    public List<Integer> divideAndConquer(TreeNode node) {
+        List<Integer> result = new LinkedList<>();
+        if (node == null) {
+            return null;
+        }
+        // 分治
+        List<Integer> left = divideAndConquer(node.left);
+        List<Integer> right = divideAndConquer(node.right);
+        // 合并结果
+        result.add(node.val);
+        if (left != null) {
+            result.addAll(left);
+        }
+        if (right != null) {
+            result.addAll(right);
+        }
+        return result;
+    }
+}
+// // 100%

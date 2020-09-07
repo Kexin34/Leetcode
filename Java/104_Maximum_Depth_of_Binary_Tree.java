@@ -1,4 +1,7 @@
 // DFS + Recursion
+// 解法：分治法
+// 计算maxDepth(root.left)，maxDepth(root.right)就是分治，
+// Math.max(maxDepth(root.left), maxDepth(root.right)) + 1就是合并的过程
 class Solution {
     public int maxDepth(TreeNode root) {
         if (root == null) return 0;

@@ -29,33 +29,31 @@ class Solution {
 
 
 //Approach 2: Iteration: BFS Traversal
-
 class Solution {
     public List<List<Integer>> levelOrderBottom(TreeNode root) {
-        List<List<Integer>> ans = new LinkedList<List<Integer>>();
-        if (root == null) return ans;
-        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        List<List<Integer>> res = new ArrayList<>();
+        if (root == null) return res;
+        
+        Queue<TreeNode> queue = new LinkedList<>();
         queue.offer(root);
         
-        while(!queue.isEmpty()){
-            int levelNums = queue.size(); // 当前层元素的个数
-            List<Integer> subList = new LinkedList<Integer>();
-            for (int i = 0; i < levelNums; i++){
-                TreeNode curNode = queue.poll();
-                if (curNode != null){
-                    subList.add(curNode.val);
-                    queue.offer(curNode.left);
-                    queue.offer(curNode.right);
-                }
+        while (!queue.isEmpty()){
+            int size = queue.size();
+            List<Integer> list = new ArrayList<>();
+            
+            for (int i = 0; i < size; i++){
+                TreeNode node = queue.poll();
+                list.add(node.val);
+                if (node.left != null) queue.offer(node.left);
+                if (node.right != null) queue.offer(node.right);
             }
             // 本层list建立好了，需要添加到ans的头部（倒叙）
-            if (subList.size() > 0)
-                ans.add(0, subList);
+            res.add(0, list);
         }
-        return ans;
+        return res;
     }
 }
-//faster than 79.89% of Java
+// faster than 88.63% of Java
 
 
 
