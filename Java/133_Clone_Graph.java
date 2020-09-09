@@ -9,26 +9,24 @@ class Solution {
     public Node cloneGraph(Node node) {
         if (node == null) return null;
         
-        // First BFS
         Queue<Node> queue = new LinkedList<Node>();
-        Map<Integer, Node> map = new HashMap<>();  // <node's value, node>
+        Map<Integer, Node> map = new HashMap<>();  // <原node's value, 对应新node>
         Set<Integer> visited = new HashSet<>();
-        
+
+        // First BFS
         queue.offer(node);
         visited.add(node.val);
 
         while (!queue.isEmpty()){
             Node cur = queue.poll();
             //生成每一个copy的节点(deep copy)
-            Node copied = new Node();
-            copied.val = cur.val;
+            Node copied = new Node(cur.val);
             copied.neighbors = new ArrayList<>();
-            map.put(copied.val, copied);
+            map.put(cur.val, copied);
             
             /* BFS会把现节点(未访问过的）邻居全部压入queue中,用于之后dequeue遍历 */
             for (Node neighbor : cur.neighbors){
-                if (visited.contains(neighbor.val))
-                    continue;
+                if (visited.contains(neighbor.val)) continue;
                 queue.offer(neighbor);
                 visited.add(neighbor.val);
             }
@@ -43,13 +41,11 @@ class Solution {
         while (!queue.isEmpty()){
             Node cur = queue.poll();
             /* 更新新节点的neightbors */
-            for (Node neighbor : cur.neighbors)
-                map.get(cur.val).neighbors.add(map.get(neighbor.val));
-                
-            /* 把原节点邻居全部压入queue中之后遍历 */
             for (Node neighbor : cur.neighbors){
-                if (visited.contains(neighbor.val))
-                    continue;
+                map.get(cur.val).neighbors.add(map.get(neighbor.val));
+
+                /* 把原节点邻居全部压入queue中之后遍历 */
+                if (visited.contains(neighbor.val)) continue;
                 queue.offer(neighbor);
                 visited.add(neighbor.val);
             }
@@ -58,6 +54,7 @@ class Solution {
     }
 }
 //faster than 95.00% of Java
+
 
 // 优化BFS，只需要一次遍历
 class Solution {
@@ -92,7 +89,8 @@ class Solution {
 }
 // faster than 96.80% of Java
 
-// DFS 解法，好理解
+
+// DFS解法，好理解
 class Solution {
     public Node cloneGraph(Node node) {
         if(node == null) return node;
@@ -101,18 +99,21 @@ class Solution {
     }
     
     private Node cloneGraphHelper(Node node, Map<Integer, Node> map){
-        if(map.containsKey(node.val))
-            return map.get(node.val);
-        //生成当前节点
-        Node n = new Node(node.val);
-        n.neighbors = new ArrayList<Node>();
-        map.put(node.val, n);
-        //添加它的所有邻居节点
-        for(Node temp : node.neighbors){
-            n.neighbors.add(cloneGraphHelper(temp, map));
+        // 如果visited存在node的克隆结点则返回克隆结点
+        if(map.containsKey(node.val)) return map.get(node.val);
+
+        //生成克隆节点
+        Node cloneNode = new Node(node.val, new ArrayList());
+        cloneNode.neighbors = new ArrayList<>();
+        map.put(cloneNode.val, cloneNode);
+
+        // 设置好cloneNode结点的克隆结点
+        for (Node neighbor : node.neighbors){
+            // 递归node邻居结点的克隆结点
+            cloneNode.neighbors.add(clone(neighbor, map));
         }
-        return n;
+        return cloneNode;
     }
 }
-//faster than 8.11% of Java 
+//  faster than 96.51% of Java onl
 

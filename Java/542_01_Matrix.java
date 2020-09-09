@@ -32,42 +32,49 @@ class Solution {
         return matrix;
     }
 }
-// faster than 15.68% of Jav
+// faster than 71.52% of Java 
 
-// DP最优解（copy过来的，还没看）
+
+
+// 解法二：DP最优解
 class Solution {
     public int[][] updateMatrix(int[][] matrix) {
-        if (matrix.length == 0 || matrix[0].length == 0) {
-            return matrix;
-        }
-        int[][] dis = new int[matrix.length][matrix[0].length];
-        int range = matrix.length * matrix[0].length;
-
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
-                if (matrix[i][j] == 0) {
-                    dis[i][j] = 0;
-                } else {
-                    int upCell = (i > 0) ? dis[i - 1][j] : range;
-                    int leftCell = (j > 0) ? dis[i][j - 1] : range;
-                    dis[i][j] = Math.min(upCell, leftCell) + 1;
-                }
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int[][] dist = new int[m][n];
+        int MAX_TEMP = Integer.MAX_VALUE / 2;   //除以2防止溢出
+        
+        // 1. DP array初始化
+        // 如果 (i, j) 的元素为 0，那么距离为 0，否则设置成一个很大的数 MAX_TEMP
+        for (int i = 0; i < m; i++){
+            for (int j = 0; j < n; j++){
+                if (matrix[i][j] == 0)
+                    dist[i][j] = 0;
+                else 
+                    dist[i][j] = MAX_TEMP;
             }
         }
-
-        for (int i = matrix.length - 1; i >= 0; i--) {
-            for (int j = matrix[0].length - 1; j >= 0; j--) {
-                if (matrix[i][j] == 0) {
-                    dis[i][j] = 0;
-                } else {
-                    int downCell = (i < matrix.length - 1) ? dis[i + 1][j] : range;
-                    int rightCell = (j < matrix[0].length - 1) ? dis[i][j + 1] : range;
-                    dis[i][j] = Math.min(Math.min(downCell, rightCell) + 1, dis[i][j]);
-                }
+        
+        // 2. 水平向右移动 和 竖直向下移动
+        for (int i = 0; i < m; i++){
+            for (int j = 0; j < n; j++){
+                if (i - 1 >= 0)         // 根据upper cell计算
+                    dist[i][j] = Math.min(dist[i][j], dist[i - 1][j] + 1);
+                if (j - 1 >= 0)         // 根据左边的cell计算
+                    dist[i][j] = Math.min(dist[i][j], dist[i][j - 1] + 1);
             }
         }
-
-        return dis;
+            
+        // 3. 水平向左移动 和 竖直向上移动
+        for (int i = m - 1; i >= 0; i--){
+            for (int j = n - 1; j >= 0; j--){
+                if (i + 1 < m)          // 根据下面的cell计算
+                    dist[i][j] = Math.min(dist[i][j], dist[i + 1][j] + 1);
+                if (j + 1 < n)          // 根据右边的cell计算
+                    dist[i][j] = Math.min(dist[i][j], dist[i][j + 1] + 1);
+            }
+        }
+        return dist;
     }
 }
-// faster than 97.11% of Java 
+// faster than 97.04% of Java

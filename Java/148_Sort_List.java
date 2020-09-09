@@ -1,48 +1,45 @@
-// 归并排序
+// 思路：归并排序，找中点和合并操作
+
 class Solution {
     public ListNode sortList(ListNode head) {
-        return mergeSort(head);
-    }
-    
-    private ListNode mergeSort(ListNode head) {
-        if(head == null || head.next == null)
+        // 递归结束条件
+        if (head == null || head.next == null) 
             return head;
+        
         //因为归并排序是一半一半的进行，所以需要快慢指针找到中点
-        ListNode dummy = new ListNode(-1);
-        dummy.next = head;
-        ListNode fast = dummy;
-        ListNode slow = dummy;
-        while(fast != null && fast.next != null){
+        ListNode slow = head, fast = head.next;
+        while (fast != null && fast.next != null){
             slow = slow.next;
             fast = fast.next.next;
         }
-        
         //slow 刚好指向前边一半节点的最后一个节点
-        ListNode head2 = slow.next;
+        ListNode rightHead = slow.next;
         slow.next = null;
+        
         //merge sort 核心过程：
-        head = mergeSort(head);
-        head2 = mergeSort(head2);
-        return merge(head, head2); 
+        ListNode left = sortList(head);
+        ListNode right = sortList(rightHead);
+        return mergeLists(left, right);
     }
     
     // 通用的merge two list函数
-    private ListNode merge(ListNode l1, ListNode l2) {
-        ListNode prehead = new ListNode(-1);    // 哨兵节点
-        ListNode dummy = prehead;
-        while(l1 != null && l2 != null){
-            if(l1.val > l2.val){
-                dummy.next = new ListNode(l2.val);
-                l2 = l2.next;  
-            }else{
-                dummy.next = new ListNode(l1.val);
-                l1 = l1.next;
+    private ListNode mergeLists(ListNode left, ListNode right){
+        ListNode dummy = new ListNode(-1);
+        ListNode cur = dummy;
+        while (left != null && right != null){
+            if (left.val < right.val){
+                cur.next = left;
+                left = left.next;
             }
-            dummy = dummy.next;
+            else{
+                cur.next = right;
+                right = right.next;
+            }
+            cur = cur.next;
         }
-        dummy.next = l1 == null ? l2 : l1;
-        return prehead.next;
+        cur.next = (left == null) ? right : left;
+        return dummy.next;
     }
-    
 }
-
+// faster than 98.23% of Java
+// 时间复杂度O(nlogn)
