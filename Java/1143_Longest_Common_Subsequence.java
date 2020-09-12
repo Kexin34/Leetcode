@@ -4,6 +4,7 @@
 class Solution {
     public int longestCommonSubsequence(String text1, String text2) {
         int n1 = text1.length(), n2 = text2.length();
+         // dp[i][j] a前i个和b前j个字符最长公共子序列
         int[][] dp = new int[n1 + 1][n2 + 1];//the dp start 1, end n
         
         for (int i = 1; i <= n1; i++){

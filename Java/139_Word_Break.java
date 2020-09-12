@@ -9,7 +9,7 @@ class Solution {
             for (String word : wordDict){   // 对物品的迭代应放在里层
                 int len = word.length();
                 if (len <= i && word.equals(s.substring(i - len, i)))
-                    // 因为要连续符合才行，要看i-len位置是否也符合
+                    // 如果当前word在区间[i-len,i)里面,也要保证当前区间其他部分[0,i-len)也符合
                     dp[i] = dp[i] || dp[i - len];
             }
         }

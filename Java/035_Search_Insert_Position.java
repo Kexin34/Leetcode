@@ -1,10 +1,12 @@
 // binary search
-
+// 思路：找到第一个 >= target 的元素位置
+// 左边界
 class Solution {
     public int searchInsert(int[] nums, int target) {
         int left = 0;
         int right = nums.length - 1;
-        // <=理由：如果target比最右元素都大，left在等于right后继续加一再终止，返回正确index
+        
+        // <= 理由：如果target比最右元素都大，left在等于right后继续加一再终止，返回正确index
         while (left <= right){
             int mid = left + (right - left) / 2;
             if (target == nums[mid])

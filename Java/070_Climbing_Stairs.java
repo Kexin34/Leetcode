@@ -1,3 +1,21 @@
+// 暴力解（递归）
+class Solution {
+    public int climbStairs(int n) {
+        return climb(n);
+    }
+    
+    public int climb(int n) {
+        if (n < 0) return 0;
+        if (n == 0) return 1;
+        return climb(n - 1) + climb(n - 2);
+    }
+}
+// TLE
+// Time complexity : O(2^n), Size of recursion tree will be 2^n
+// Space complexity : O(n). The depth of the recursion tree can go upto n.
+
+
+
 // 解法一：Recursion with Memoization
 // 0(n) complexity
 
@@ -39,18 +57,17 @@ class Solution {
 
 
 
-// DP:  memory 减小
+// 解法三：DP 滚动数组
 class Solution {
     public int climbStairs(int n) {
-        //dp[i] 只与 dp[i - 1] 和 dp[i - 2] 
+        // dp[i] 只与 dp[i - 1] 和 dp[i - 2] 
         // base case
         if (n <= 2) return n;
-        
-        int pre2 = 1;   //[0] = 1
-        int pre1 = 1;   //[1] = 1
+        int pre2 = 1;       // dp[1] = 1;
+        int pre1 = 2;       // dp[2] = 2;
         int cur = 0;
- 
-        for (int i = 2; i <= n; i++){
+        
+        for (int i = 3; i <= n; i++){
             cur = pre2 + pre1;
             pre2 = pre1;
             pre1 = cur;
@@ -58,4 +75,4 @@ class Solution {
         return pre1;
     }
 }
-// faster than 100.00% of Java
+//faster than 100.00% of Java

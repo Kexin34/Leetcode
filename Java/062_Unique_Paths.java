@@ -1,4 +1,13 @@
-// 二维DP
+// 暴力解（TLE) 递归
+class Solution {
+    public int uniquePaths(int m, int n) {
+        if (m == 1 || 1 == 0) return 1;
+        return uniquePaths(m - 1, n) + uniquePaths(m, n - 1);
+    }
+}
+
+
+// 解法一：二维DP
 class Solution {
     public int uniquePaths(int m, int n) {
         int[][] dp = new int[m][n];
@@ -14,7 +23,7 @@ class Solution {
 // faster than 100.00% of Java
 
 
-//一维DP
+// 解法二：一维DP
 class Solution {
     public int uniquePaths(int m, int n) {
         int[] dp = new int[n];

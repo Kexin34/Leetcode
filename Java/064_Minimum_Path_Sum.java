@@ -6,14 +6,14 @@ class Solution {
         int n = grid[0].length;
         
         int[][] sum = new int[m][n];
-        for (int[] arr : sum)
-            Arrays.fill(arr, 0);
+        for (int[] arr : sum) Arrays.fill(arr, 0);  //java可以不需要
         return minPathSum(grid, m - 1, n - 1, m, n, sum);
     }
+
     public int minPathSum(int[][] grid, int r, int c, int m, int n, int[][] sum){
         if (r == 0 && c == 0) return grid[r][c]; //递归到起点
         if (r < 0 || c < 0) return Integer.MAX_VALUE;
-        if (sum[r][c] > 0) return sum[r][c];
+        if (sum[r][c] > 0) return sum[r][c];        // 记忆化memo返回
         
         sum[r][c] = grid[r][c] + Math.min(minPathSum(grid, r - 1, c, n, m,sum),
                                          minPathSum(grid, r, c - 1, n, m,sum));
@@ -67,10 +67,13 @@ class Solution {
                 else if (r == 0)        //第一行每个只看同行左一个
                     dp[c] = dp[c - 1];
                 else
+                    // dp[j]是本cell上一行，dp[j-1]是本cell左边格（已计算好了）
                     dp[c] = Math.min(dp[c - 1], dp[c]);
+                // 最后统一加上本cell value
                 dp[c] += grid[r][c];
             }
         }
+        // 当前dp数组存的是最后一行计算完的结果，最后一格就是答案
         return dp[n - 1];
     }
 }

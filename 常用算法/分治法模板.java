@@ -57,43 +57,41 @@ public class Solution {
 
 // 归并排序
 // 注意点：递归需要返回结果用于合并  
-public class Solution{
-	public int[] mergeSortRoot(int[] nums){
-		mergeSort(nums, 0, nums.length - 1);
-		return nums;
-	}
+class Solution {
+    private int[] aux;
+    
+    public int[] sortArray(int[] nums) {
+        aux = new int[nums.length];
+        mergeSort(nums, 0, nums.length - 1);
+        return nums;
+    }
+    
+    public void mergeSort(int[] nums, int lo, int hi){
+        if (lo >= hi) return;
+        // 分治法：divide 分为两段
+        int mid = lo + (hi - lo) / 2;
+        mergeSort(nums, lo, mid);
+        mergeSort(nums, mid + 1, hi);
 
-	private void mergeSort(int[] nums, int l, int r){
-		if (l < r){
-			int mid = (l + r) / 2;
-			// 分治
-			mergeSort(nums, l, mid);
-			mergeSort(nums, mid + 1, r);
-			// 合并
-			merge(nums, l, mid, r);
-		}
-	}
-
-	private void merge(int[] nums, int l, int mid, int r){
-		int i = l, j = mid + 1, k = l;			// k是tmp的index
-		int[] tmp = new int[nums.length];
-
-		while (i <= mid && j <= r){
-			if (nums[i] > nums[j])
-				tmp[k++] = nums[j++];
-			else
-				tmp[k++] = nums[i++];
-		}
-		while (i <= mid) 						//如果左/右有剩余的元素，全copy
-			tmp[k++] = nums[i++];
-		while (j <= r)
-			tmp[k++] = nums[j++];
-
-		for (i = l; i <= r; i++) 				// 把tmp拷贝给nums
-			nums[i] = tmp[i];
-	}
+        // 合并两段数据
+        merge(nums, lo, mid, hi);
+    }
+    
+    private void merge(int[] a, int lo, int mid, int hi){
+        int i = lo, j = mid + 1;
+        // 先把原array复制一遍，之后修改原来array
+        for (int k = lo; k <= hi; k++)
+            aux[k] = a[k];
+        
+        // 开始merge，前后子数组的指针就是i，j
+        for (int k = lo; k <= hi; k++) {
+            if (i > mid) a[k] = aux[j++];               // 当左边到底了，取右
+            else if (j > hi) a[k] = aux[i++];           // 当右边到底了，取左
+            else if (aux[i] < aux[j]) a[k] = aux[i++];  // 右边现有元素较小，取右
+            else a[k] = aux[j++];                       // 左边现有元素较小，取左
+        }
+    }
 }
-
 
 
 
