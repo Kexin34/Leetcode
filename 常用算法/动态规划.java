@@ -211,6 +211,15 @@ class Solution {
 
 
 /////////////////////////////2、序列类型（40%）///////////////////////////
+/*
+小结
+	常见处理方式是给 0 位置占位，这样处理问题时一视同仁，初始化则在原来基础上 length+1，返回结果 f[n]
+		状态可以为前 i 个
+		初始化 length+1
+		取值 index = i-1
+		返回值：f[n]或者 f[m][n]
+*/
+
 // 70. Climbing Stairs
 // 假设你正在爬楼梯。需要  n  阶你才能到达楼顶。
 class Solution {
@@ -279,7 +288,7 @@ class Solution {
         while (cur < n - 1){    // 未到达末尾index时继续循环
             steps++;
             int pre = cur;      // 表示上一次循环后能到达的最远位置
-            
+
             //当前位置i <= pre，说明还是在上一跳能到达的范围内
             for (; i <= pre; i++)
                 cur = Math.max(cur, i + nums[i]);
@@ -288,6 +297,216 @@ class Solution {
     }
 }
 
+
+
+// 132. Palindrome Partitioning II
+// 给定一个字符串 s，将 s 分割成一些子串，使每个子串都是回文串。 返回符合要求的最少分割次数。
+class Solution {
+    public int minCut(String s) {
+        int n = s.length();
+        boolean[][] isP = new boolean[n][n];
+        int[] dp = new int[n];
+        
+        for (int i = 0; i < n; i++){
+            dp[i] = i;
+            for (int j = 0; j <= i; j++){   //用 j 遍历区间 [0, j]
+                // 验证的是区间 [j, i] 内的子串是否为回文串
+                if(s.charAt(i) == s.charAt(j) && (i - j < 2 || isP[j + 1][i - 1])){
+                    isP[j][i] = true;
+                    dp[i] = (j == 0) ? 0 : Math.min(dp[i], dp[j - 1] + 1);
+                }
+                    
+            }
+        }
+        return dp[n - 1];
+    }
+}
+
+// 注意点:
+// 判断回文字符串时，可以提前用动态规划算好(isP)，减少时间复杂度
+
+
+// 300. Longest Increasing Subsequence
+// 给定一个无序的整数数组，找到其中最长上升子序列的长度。
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        if (nums.length == 0 || nums == null) return 0;
+        int n = nums.length;
+        int[] dp = new int[n];
+        Arrays.fill(dp, 1);
+        
+        for (int i = 1; i < n; i++){
+            for (int j = 0; j < i; j++){
+                if (nums[i] > nums[j])
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+            }
+        }
+        int result = dp[0];
+        for (int i = 1; i < n; i++) 
+            result = Math.max(result, dp[i]);
+        return result;
+    }
+}
+
+
+// 139. Word Break
+// 给定一个非空字符串s和一个包含非空单词列表的字典wordDict，判定s是否可以被空格拆分为一个或多个在字典中出现的单词。
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        int n = s.length();
+        boolean[] dp = new boolean[n + 1];
+        dp[0] = true;
+      
+        for (int i = 1; i <= n; i++){   // 对背包的迭代应放在外层
+            for (String word : wordDict){   // 对物品的迭代应放在里层
+                int len = word.length();
+                if (len <= i && word.equals(s.substring(i - len, i)))
+                    // 如果当前word在区间[i-len,i)里面,也要保证当前区间其他部分[0,i-len)也符合
+                    dp[i] = dp[i] || dp[i - len];
+            }
+        }
+        return dp[n];
+    }
+}
+
+
+
+
+
+///////////////////////Two Sequences DP（40%）//////////////////////////////////
+
+
+// 1143. Longest Common Subsequence
+// 给定两个字符串text1和text2，返回这两个字符串的最长公共子序列。
+class Solution {
+    public int longestCommonSubsequence(String text1, String text2) {
+        int n1 = text1.length(), n2 = text2.length();
+         // dp[i][j] a前i个和b前j个字符最长公共子序列
+        int[][] dp = new int[n1 + 1][n2 + 1];
+        
+        for (int i = 1; i <= n1; i++){
+            for (int j = 1; j <= n2; j++){
+                if (text1.charAt(i - 1) == text2.charAt(j - 1))
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                else
+                    dp[i][j] = Math.max(dp[i -1][j], dp[i][j - 1]);
+            }
+        }
+        return dp[n1][n2];
+    }
+}
+
+// 72. Edit Distance
+// 相等则不需要操作，否则取删除、插入、替换最小操作次数的值+1
+class Solution {
+    public int minDistance(String word1, String word2) {
+        int n1 = word1.length(), n2 = word2.length();
+        // 如果其中一个是空串
+        if (n1 * n2 == 0) return n1 + n2; 
+        int[][] dp = new int[n1 + 1][n2 + 1];
+        
+        // 边界初始化
+        for (int i = 1; i <= n1; i++)
+            dp[i][0] = i;   // 空串与word1前i个的距离
+        for (int j = 1; j <= n2; j++)
+            dp[0][j] = j;   // 空串与word2前j个的距离
+    
+        for (int i = 1; i <= n1; i++){
+            for (int j = 1; j <= n2; j++){
+                if (word1.charAt(i - 1) == word2.charAt(j - 1))
+                    // 本来就相等，不需要任何操作
+                    dp[i][j] = dp[i - 1][j - 1];
+                else// 否则取删除、插入、替换最小操作次数的值+1
+                    dp[i][j] = 1 + Math.min(
+                                dp[i - 1][j - 1],       // 替换
+                                Math.min(dp[i - 1][j],  // 删除 
+                                         dp[i][j - 1]));// 插入
+            }
+        }
+        return dp[n1][n2];
+    }
+}
+
+
+
+
+
+
+////////////////////////////////零钱和背包（10%）////////////////////////
+// 322. Coin Change
+// 给定不同面额的硬币 coins 和一个总金额 amount。编写一个函数来计算可以凑成总金额所需的最少的硬币个数。
+// 如果没有任何一种硬币组合能组成总金额，返回  -1。
+	// 状态 dp[i]表示金额为i时，组成的最小硬币个数
+    // 推导 dp[i]  = min(dp[i-1], dp[i-2], dp[i-5])+1, 前提 i-coins[j] > 0
+    // 初始化为最大值 dp[i]=amount+1
+    // 返回值 dp[n] or dp[n]>amount =>-1
+class Solution {
+    public int coinChange(int[] coins, int amount) {
+        int[]dp = new int[amount + 1];
+        Arrays.fill(dp, amount + 1);        // 初始化为最大值
+        dp[0] = 0;
+        
+        for (int i = 1; i <= amount; i++){
+            for (int coin : coins){
+                if (i - coin >= 0)
+                    dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+            }
+        }
+        if (dp[amount] > amount) return -1;
+        return dp[amount]; 
+    }
+}
+
+
+// backpack
+// 在 n 个物品中挑选若干物品装入背包，最多能装多满？假设背包的大小为 m，每个物品的大小为 A[i]
+	// f[i][j] 前i个物品，是否能装j
+    // f[i][j] =f[i-1][j] f[i-1][j-a[i] j>a[i]
+    // f[0][0]=true f[...][0]=true
+    // f[n][X]
+class Solution {
+	public backpack(int m, int[] A){
+		int n = A.length;
+		boolean[][] dp = new boolean[n + 1][m + 1];
+		dp[0][0] = true;
+		for (int i = 1; i <= n; i++){	//外圈是物品
+			for (int j = 1; j <= m; j++){
+				dp[i][j] = d[i][j - 1];
+				if (j - A[i] >= 0 && dp[i - 1][j - A[i - 1]])
+					dp[i][j] = true;
+			}
+		}
+		for (int i = m; i >= 0; i--){
+			if (dp[n][i]) return i;
+		}
+		return 0;
+	}
+}
+
+
+
+// backpack-ii
+// 有 n 个物品和一个大小为 m 的背包. 给定数组 A 表示每个物品的大小和数组 V 表示每个物品的价值. 
+// 问最多能装入背包的总价值是多大?
+//思路：f[i][j] 前 i 个物品，装入 j 背包 最大价值
+class Solution {
+	public backpack(int m, int[] A, int[] V){
+	// f[i][j] 前i个物品，装入j背包 最大价值
+    // f[i][j] =max(f[i-1][j] ,f[i-1][j-A[i]]+V[i]) 是否加入A[i]物品
+    // f[0][0]=0 f[0][...]=0 f[...][0]=0
+		int n = A.length;
+		int[][]dp = new int[n + 1][m + 1];
+		dp[0][0] = 0;
+		for (int i = 1; i <= n; i++){
+			for (int j = 0; j <= n; j++){
+				dp[i][j] = d[i - 1][j];
+				if (j - A[i - 1] >= 0)			//可以放得下这个物品(i-1)
+					dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - A[i - 1]] + V[i - 1]);
+			}
+		}
+		return dp[n][m];
+	}
+}
 
 
 
