@@ -32,7 +32,7 @@ class Solution {
     public int lengthOfLongestSubstring(String s) {
         int n = s.length();
         int maxLen = 0;         // 记录最长长度
-        Map<Character, Integer> window = new HashMap<>();
+        Map<Character, Integer> window = new HashMap<>();// 这里value不是频率，而是相应index
         
         // 尝试去拓展range[i, j]
         for (int i = 0, j = 0; j < n; j++){

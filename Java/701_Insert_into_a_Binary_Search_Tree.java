@@ -16,3 +16,24 @@ class Solution {
     }
 }
 // faster than 100.00% of Java online 
+
+
+// 解法：遍历
+class Solution {
+    public TreeNode insertIntoBST(TreeNode root, int val) {
+        if (root == null) return new TreeNode(val);
+        
+        TreeNode cur = root;
+        while (cur.val != val){
+            if (cur.val > val){     // go left
+                if (cur.left == null) cur.left = new TreeNode(val);
+                cur = cur.left;
+            }else{                  // go right
+                if (cur.right == null) cur.right = new TreeNode(val);
+                cur = cur.right;
+            }
+        }
+        return root;
+    }
+}
+//  faster than 100.00% of Java

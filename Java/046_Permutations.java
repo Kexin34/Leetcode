@@ -1,4 +1,51 @@
-// DFS + backtracking
+// 解法：DFS + 回溯 （花花的permutation模板，推荐）
+class Solution {
+    boolean[] used;
+    List<List<Integer>> res;
+    
+    public List<List<Integer>> permute(int[] nums) {
+        res = new LinkedList<>();
+        if (nums.length == 0) return res;
+        int n = nums.length;
+
+        ArrayList<Integer> path = new ArrayList<>();
+        used = new boolean[n];
+        
+        dfs(nums, 0, path);
+        return res;
+    }
+    
+    public void dfs(int[] nums, int depth, ArrayList<Integer> path){
+        if (depth == nums.length){
+            res.add(new ArrayList(path));
+            return;
+        }
+        
+        for (int i = 0; i < nums.length; i++){
+            // 重点：本次path已经访问过的跳过
+            if (used[i]) continue;
+            used[i] = true;
+            path.add(nums[i]);
+            dfs(nums, depth + 1, path);
+            
+            path.remove(path.size() - 1);   // resume
+            used[i] = false;
+        }
+        return;
+    }
+}
+// faster than 92.88% of Java 
+// Time complexity: O(n!)
+// Space complexity: O(n)
+
+
+
+
+
+
+
+
+// 官方版：DFS + backtracking （不推荐）
 class Solution {
     public List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> result = new LinkedList<>();
