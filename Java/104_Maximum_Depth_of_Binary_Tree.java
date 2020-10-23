@@ -1,5 +1,5 @@
 // DFS + Recursion
-// 解法：分治法
+// 解法：分治法, 自底向上
 // 计算maxDepth(root.left)，maxDepth(root.right)就是分治，
 // Math.max(maxDepth(root.left), maxDepth(root.right)) + 1就是合并的过程
 class Solution {
@@ -11,6 +11,26 @@ class Solution {
     }
 }
 // faster than 100.00% of Java
+
+
+// 递归，自顶向下
+class Solution {
+    int res = 0;
+    public int maxDepth(TreeNode root) {
+        if (root == null) return 0;
+        helper(root, 1);
+        return res;
+    }
+    
+    public void helper(TreeNode node, int depth){
+        if (node == null) return;
+        // 如果是叶节点，更新最大depth
+        if (node.left == null && node.right == null)
+            res = Math.max(res, depth);
+        helper(node.left, depth + 1);
+        helper(node.right, depth + 1);
+    }
+}
 
 
 

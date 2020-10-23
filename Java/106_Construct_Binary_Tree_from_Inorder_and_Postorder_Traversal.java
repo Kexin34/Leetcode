@@ -5,6 +5,8 @@ class Solution {
     HashMap<Integer, Integer> idx_map = new HashMap<Integer, Integer>();
     
     public TreeNode buildTree(int[] inorder, int[] postorder) {
+        if (inorder == null || postorder == null || inorder.length != postorder.length)
+            return null;
         this.postorder = postorder;
         this.inorder = inorder;
         // start from the last postorder element

@@ -35,6 +35,7 @@ public class Codec {
         if(data.length() == 0) return null;
         
         //先将字符串string还原为数组string array，再转化成int array
+        // 不包括0因为data[0] = “[”，data最后位是]
         String[] preStr = data.substring(1, data.length() - 1).split(",");
         Integer[] bfsOrder = new Integer[preStr.length];
         for (int i = 0; i < preStr.length; i++) {

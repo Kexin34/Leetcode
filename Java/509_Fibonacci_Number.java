@@ -51,7 +51,6 @@ class Solution {
 class Solution {
     public int fib(int N) {
         if (N <= 1) return N;
-        int[] dp = new int[N + 1];
         int pre2 = 0;
         int pre1 = 1;
         int cur = 0;

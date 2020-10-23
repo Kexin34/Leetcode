@@ -1,20 +1,21 @@
 // 双指针解法
+// 维护 nums[0..i] 无重复
 class Solution {
     public int removeDuplicates(int[] nums) {
         int n = nums.length;
         if(n == 0) return 0;
-        int slow = 0, fast = 1;
-        while(fast < n){
-            if(nums[fast] != nums[slow]){//当fast遇到新元素
-                slow++;
-                // 维护 nums[0..slow] 无重复
-                nums[slow] = nums[fast];
+
+        int i = 0;                  // i指向的是新数组当前保存的数字，可以跟j比较
+        for (int j = 1; j < n; j++){
+            if (nums[j] != nums[i]){    //当fast遇到新元素
+                i++;
+                nums[i] = nums[j];
             }
-            fast++;
         }
-        // 长度为索引 + 1
-        return slow + 1;
+        // i是当前新数组末尾index，长度是i+ 1
+        return i + 1;
     }
 }
-
-// faster than 100.00% of Java
+// faster than 100.00% of Java 
+// Time  : O(n). Assume that n is the length of array. Each of i and j traverses at most nn steps.
+// Space  : O(1)
