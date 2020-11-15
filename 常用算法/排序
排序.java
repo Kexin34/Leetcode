@@ -13,6 +13,7 @@
 
 
 // 归并排序
+// 平均时间复杂度: O(nlogn), 最坏时间复杂度: O(nlogn)
 class Solution {
     private int[] aux;
     
@@ -52,6 +53,13 @@ class Solution {
 
 
 // 快速排序
+/* 
+  快速排序从小到大排序：
+  在数组中随机选一个数（默认数组首个元素），数组中小于等于此数的放在左边部分，
+  大于此数的放在右边部分，这个操作确保了这个数是处于正确位置的，再对左边部分数组和右边部分数组
+  递归调用快速排序，重复这个过程。
+*/
+// 平均时间复杂度: O(nlogn), 最坏时间复杂度: O(n²)
 class Solution {
     public int[] sortArray(int[] nums) {
         if (nums == null || nums.length == 0) return nums;
@@ -71,7 +79,7 @@ class Solution {
     
     // 分区
     private int partition(int[] nums, int l, int r) {
-        int pivot = nums[l];// 选取头元素作为基准pivot
+        int pivot = nums[l];// 选取首个元素作为基准pivot
         int pivot_idx = l;  // 保留这个pivot index，之后和LeftGreaterThanPivot交换
         while (l < r) {
             // 从右到左找到首个RightSmallerThanPivot元素
@@ -93,6 +101,7 @@ class Solution {
         nums[i] = tmp;
     }
 }
+
 
 
 
