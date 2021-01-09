@@ -1,4 +1,5 @@
 // DP 模板
+
 // dp[i][j]: 刷到第 i+1 房子用颜色j的最小花费
 class Solution {
     public int minCost(int[][] costs) {

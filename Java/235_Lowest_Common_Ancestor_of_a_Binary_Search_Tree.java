@@ -16,3 +16,4 @@ class Solution {
     }
 }
 // faster than 100.00% of Java
+// Time: O(N), space : O(N)
