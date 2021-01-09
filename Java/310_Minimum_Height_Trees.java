@@ -1,4 +1,4 @@
-// BFS topological sort 剥洋葱
+// BFS topological sort 剥洋葱类型
 class Solution {
     public List<Integer> findMinHeightTrees(int n, int[][] edges) {
         
