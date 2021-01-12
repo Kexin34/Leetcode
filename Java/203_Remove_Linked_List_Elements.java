@@ -2,21 +2,22 @@
 
 class Solution {
     public ListNode removeElements(ListNode head, int val) {
+        if (head == null) return null;
         ListNode dummy = new ListNode(-1);
         dummy.next = head;
-        ListNode cur = dummy;   //始终指向要删除的节点的前一个位置
+        ListNode pre = dummy;       //始终指向要删除的节点的前一个位置
         
-        while (cur.next != null){
-            ListNode next_ptr = cur.next;
-            if (next_ptr.val == val) 
-                cur.next = next_ptr.next;// 找到，remove next_ptr指向的node
+        while (head != null) {
+            if (head.val == val)
+                pre.next = head.next;
             else
-                cur = cur.next;
+                pre = head;
+            head = head.next;
         }
         return dummy.next;
     }
 }
-// faster than 92.19% of Java
+//faster than 100.00% of Java 
 
 
 

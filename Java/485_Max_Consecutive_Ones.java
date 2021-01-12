@@ -3,8 +3,8 @@ class Solution {
     public int findMaxConsecutiveOnes(int[] nums) {
         int count = 0;
         int res = 0;
-        for (int i = 0; i < nums.length; i++){
-            if (nums[i] == 1)
+        for (int num : nums){
+            if (num == 1)
                 count++;
             else{
                 res = Math.max(res, count);
@@ -14,5 +14,6 @@ class Solution {
         return Math.max(res, count);
     }
 }
+//  faster than 100.00% of Java
 // Time : O(N), where N is the number of elements in the array.
 // Space : O(1). We do not use any extra space.

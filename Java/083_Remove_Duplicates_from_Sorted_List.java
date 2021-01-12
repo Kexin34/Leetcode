@@ -17,6 +17,21 @@ class Solution {
 
 
 // 解法二：递归
+// 1.我写的递归
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null || head.next == null) return head;
+        if (head.val == head.next.val)
+            return deleteDuplicates(head.next);
+        else{
+            head.next = deleteDuplicates(head.next);
+            return head;
+        }
+    }
+}
+//  faster than 100.00% 
+
+// 2. 别人写的递归
 class Solution {
     public ListNode deleteDuplicates(ListNode head) {
         // 终止条件：到达末尾

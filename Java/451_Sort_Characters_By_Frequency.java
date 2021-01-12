@@ -1,5 +1,6 @@
 // 更简单的方法（而且更高效）
-// 先loop算一遍算freq存入hashmap，建立一个list，再根据每个char对应的freq（d），list中每个长度d都有一个array
+// 先loop算一遍算freq存入hashmap，建立一个list，再根据每个char对应的freq（d）
+// list中每个长度d都有一个array（存着对于frequ的字母）
 class Solution {
     public String frequencySort(String s) {
         Map<Character, Integer> map = new HashMap<>();
@@ -9,8 +10,8 @@ class Solution {
         for (char c : s.toCharArray())
             map.put(c, map.getOrDefault(c, 0) + 1);
         
-        //建立一个list，再根据每个char对应的freq（d），list中每个长度d都有一个list,里面有符合这长度的char
-        List <Character>[] freqBucket = new ArrayList[s.length() + 1];//why +1?
+        //建立一个list，再根据每个char对应的freq（d），list中每个长度d都有一个array,里面有符合这长度的char
+        List <Character>[] freqBucket = new ArrayList[s.length() + 1];//why +1? 因为idx对于的是frequ大小，排除0
         for (char c : map.keySet()){
             int f_value = map.get(c);
             if(freqBucket[f_value] == null)
@@ -36,7 +37,7 @@ class Solution {
 
 
 // 我按照692 hashmap + priorityqueue模板写的啰嗦版
-// 最起码是自己写的
+// 最起码是自己写的，我用的是最大优先队列（poll最大的）
 class Solution {
     public String frequencySort(String s) {
         Map<Character, Integer> map = new HashMap<>();
@@ -49,9 +50,10 @@ class Solution {
         }
         
         PriorityQueue<Map.Entry<Character, Integer>> pq = new PriorityQueue<>(
-            // 比较规则(freq, 如果freq相等，则比较keys（Character)
+            // 比较规则(freq descending order , 如果freq相等，则比较keys（Character)
+            // pq内部打印：[b=2, A=1, a=1]
             (a, b) -> a.getValue().equals(b.getValue()) ? b.getKey() - a.getKey() :
-            a.getValue() - b.getValue()
+            b.getValue() - a.getValue()
         );
         
         for (Map.Entry<Character, Integer> entry : map.entrySet()){
@@ -66,8 +68,7 @@ class Solution {
             int copies = entry.getValue();
             for (int j = 0; j < copies; j++)
                 result.append(entry.getKey());
-        }
-        result.reverse();  
+        } 
         return result.toString();
     }
 }

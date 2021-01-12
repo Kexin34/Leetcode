@@ -11,6 +11,7 @@ class Solution {
     }
 }
 // faster than 100.00% of Java
+// time: O(H), where H is a tree height. That results in O(logN) in the average case, andO(N) in the worst case.
 
 
 // iteration

@@ -1,5 +1,24 @@
-// 中序遍历解法
+// 我的中序遍历解法（建立整个有序array再直接按照index找出答案，适合：稳定不变的树）
+class Solution {
+    ArrayList<Integer> arr;
+    
+    public int kthSmallest(TreeNode root, int k) {
+        arr = new ArrayList<>();
+        inOrder(root);
+        return arr.get(k - 1);
+    }
+    public void inOrder(TreeNode root){
+        if (root == null) return;
+        inOrder(root.left);
+        arr.add(root.val);
+        inOrder(root.right);
+    }
+}
+// faster than 100.00% of Java 
 
+
+
+// 中序遍历解法(适合：k比较小的时候，可以提早结束，也适合不稳定（随时插入删除的树）
 class Solution {
     private int count;
     private int val;
@@ -26,6 +45,9 @@ class Solution {
     }
 }
 //faster than 54.65% of Java
+
+
+
 
 // DFS递归解法
 class Solution {
