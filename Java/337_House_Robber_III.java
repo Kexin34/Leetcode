@@ -1,10 +1,26 @@
-// Recursive with Memorization
+// 暴力递归解法
+class Solution {
+    public int rob(TreeNode root) {
+        if(root == null) return 0;
+        int money = root.val;
+        if (root.left != null)
+            money += rob(root.left.left) + rob(root.left.right);
+        if (root.right != null)
+            money += rob(root.right.left) + rob(root.right.right);
+        return Math.max(money, rob(root.left) + rob(root.right));
+    }
+}
+//  faster than 21.01% of Java
+
+
+
+// 解法二：记忆化递归 Recursive with Memorization
 class Solution {
     Map<TreeNode, Integer> memo = new HashMap<>();
     
     public int rob(TreeNode root) {
         if (root == null) return 0;
-        if (memo.containsKey(root)) 
+        if (memo.containsKey(root)) //若计算过，返回该节点为止能偷的金额
             return memo.get(root);
         
         // 抢本node，然后去下下家(左子树下面的左右nodes + 右子树下面的左右nodes)
@@ -27,6 +43,8 @@ class Solution {
 
 
 
+
+//解法三（最优）
 // 优化（提升100%）代码更漂亮
 class Solution {
     public int rob(TreeNode root) {

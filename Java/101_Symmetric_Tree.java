@@ -35,7 +35,7 @@ class Solution {
             if (t1 == null || t2 == null) return false;
             if (t1.val != t2.val) return false;
             
-            //将两个结点的左右子结点按相反的顺序插入队列中。
+            // 重点：将两个结点的左右子结点按相反的顺序插入队列中。
             queue.offer(t1.left);
             queue.offer(t2.right);
             queue.offer(t1.right);
