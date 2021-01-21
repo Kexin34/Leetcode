@@ -57,8 +57,8 @@ class Solution {
         // slow 指针现在指向链表中点
         //如果fast指针没有指向null，说明链表长度为奇数，slow还要再前进一步
         if(fast != null) slow = slow.next;
-        cut(head, slow);
 
+        cut(head, slow);
         // 将后一半链表翻转，然后判断两半链表是否相等
         fast = reverse(slow);
         return isEqual(head, fast);

@@ -35,7 +35,7 @@ class MyStack {
         return queue.isEmpty();
     }
 }
-
+//  faster than 100.00% of Java
 
 
 /* Method 2: Pop 模仿stack
