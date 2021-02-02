@@ -1,5 +1,7 @@
+// 八皇后解法
 
 int[] result = new int[8];//全局或成员变量,下标表示行,值表示queen存储在哪一列
+
 public void cal8queens(int row) { // 调用方式：cal8queens(0);
   if (row == 8) { // 8个棋子都放置好了，打印结果
     printQueens(result);
