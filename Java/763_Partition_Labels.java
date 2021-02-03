@@ -24,3 +24,31 @@ class Solution {
 // faster than 56.23% of Java
 //  O(1) space
 // O(n) time 
+
+
+// 把哈希表改为数组（题目说全部都是小写字母）
+class Solution {
+  public List<Integer> partitionLabels(String S) {
+        if(S == null || S.length() == 0)
+            return null;
+        
+        List<Integer> list = new ArrayList<>();
+        int[] map = new int[26];  // record the last index of the each char
+
+        for(int i = 0; i < S.length(); i++)
+            map[S.charAt(i)-'a'] = i;
+        
+        // record the end index of the current sub string
+        int last = 0;
+        int start = 0;
+        for(int i = 0; i < S.length(); i++){
+            last = Math.max(last, map[S.charAt(i)-'a']);
+            if(last == i){
+                list.add(last - start + 1);
+                start = last + 1;
+            }
+        }
+        return list;
+    }
+}
+// Runtime: 3 ms, faster than 85.13% of Java

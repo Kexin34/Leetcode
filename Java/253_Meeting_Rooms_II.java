@@ -6,7 +6,7 @@ class Solution {
         // 先按区间的 start 升序排列
         Arrays.sort(intervals, (a, b) -> (a[0] - b[0]));
         
-        // PQ，小顶堆，规则：按照结束时间从小到大排列（到时候poll最小（最早）的）
+        // PQ，最小堆，规则：按照结束时间从小到大排列（到时候poll最小（最早）的）
         PriorityQueue<int[]> pq = new PriorityQueue<>(
             intervals.length, (a, b) -> (a[1] - b[1]));
         

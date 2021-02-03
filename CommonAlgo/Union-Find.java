@@ -1,12 +1,12 @@
-class UF {
+class UnionFind {
 	
 	private int count;             // 记录连通分量
 	private int[] parent;          // 节点 x 的根节点是 parent[x]
     private int[] size;            // 新增一个数组记录树的“重量”, 小一些的树接到大一些的树下面
 
 	/* 构造函数，n 为图的节点总数 */
-	public UF(int n){
-		this.count = n;           // 一开始互不连通
+	public UnionFind(int n){
+		count = n;           // 一开始互不连通
 		parent = new int[n];      // 父节点指针初始指向自己         
 		size = new int[n];        // 最初每棵树只有一个节点, size重量应该初始化 1
 
@@ -20,8 +20,8 @@ class UF {
     public void union(int p, int q){
     	int rootP = find(p);
     	int rootQ = find(q);
-    	if(rootP == rootQ)
- 			return;
+    	if(rootP == rootQ) 
+            return;
 
  		// 将两棵树合并为一棵, 小树接到大树下面，较平衡
  		if(size[rootP] > size[rootQ]){//Q的parent变成P
@@ -60,7 +60,4 @@ class UF {
 
 // find就能以 O(1) 的时间找到某一节点的根节点，
 // 相应的，connected和union复杂度都下降为 O(1)。
-
-
-
 

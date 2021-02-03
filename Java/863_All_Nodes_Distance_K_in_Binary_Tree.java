@@ -47,7 +47,7 @@ class Solution {
 
 
 
-// 解法二：DFS + 邻接表
+// 解法二：邻接表（DFS） + BFS搜索
 //1. build a undirected graph using treenodes as vertices, and the parent-child relation as edges
 //2. do BFS with source vertice (target) to find all vertices with distance K to it.
 // 建立一个邻接链表：哈希表来建立每个结点和其相邻（俩子一父）的结点数组之间的映射
@@ -105,5 +105,6 @@ class Solution {
     }
 }
 // faster than 60.82% of Java
+// Time O(N) , Space O(N)
 
 

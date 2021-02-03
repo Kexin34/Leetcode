@@ -1,3 +1,59 @@
+
+class Solution {
+    public int orangesRotting(int[][] grid) {
+        //bfs, 1 find all rotten == 2
+        //put 2 into a queue
+        //each time poll 2 then go four directions, if next is 1, change to 2, put back to queue
+        //if queue is empty, check if there is still 1
+        int rows = grid.length;
+        int cols = grid[0].length;
+        Queue<int[]> queue = new LinkedList<>();
+        
+        for (int i = 0; i < rows; i++){
+            for (int j = 0; j < cols; j++){
+                if (grid[i][j] == 2)
+                    queue.offer(new int[]{i, j});
+            }
+        }
+        int level = 0;
+        int[][] dirs = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+        
+        while (!queue.isEmpty()){
+            level++;
+            int size = queue.size();
+            for (int i = 0; i < size; i++){
+                int[] rotten = queue.poll();
+                for (int[] dir: dirs){
+                    int x = rotten[0] + dir[0];
+                    int y = rotten[1] + dir[1];
+                    if (x < 0 || y < 0 || x >= rows || y >= cols || grid[x][y] != 1)
+                        continue;
+                    grid[x][y] = 2;
+                    queue.offer(new int[]{x, y});
+                }
+            }
+        }
+        // check if any cell remain fresh orange
+        for (int[] x : grid) {
+            for (int y : x) {
+                if (y == 1)
+                    return -1;
+            }
+        }
+        return level == 0 ? 0: level - 1;
+    }
+}
+// faster than 62.66% of Java
+
+
+
+
+
+
+
+
+
+
 // BFS - 2d array
 // faster than 47.38% of Java
 class Solution {

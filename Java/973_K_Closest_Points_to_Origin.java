@@ -1,18 +1,18 @@
 // priority queue保留最大的k个, 原数组内直接比较放入pq，不需要在存距离（不需要哈希表）
 class Solution {
     public int[][] kClosest(int[][] points, int K) {
-        // pq规则：
+        // pq规则：从小到大排列，之后会poll最大的
         PriorityQueue<int[]> pq = new PriorityQueue<int[]>(
             (p1, p2) -> (p2[0] * p2[0] + p2[1] * p2[1]) - (p1[0] * p1[0] + p1[1] * p1[1])
         );
         
-        // 把point放入pq，pa保留最大的k个
+        // 把point放入pq，pa保留最小的k个点
         for (int[] p : points){
             pq.offer(p);
             if (pq.size() > K)
                 pq.poll();
         }
-        // 把pa内容(先poll小的）放入result数组后面，从后往前放
+        // 把pa内容(先poll队里最大的）放入result数组后面，从后往前放
         int[][] res = new int[K][2];
         while (K > 0)
             res[--K] = pq.poll();       //注意不能是[K--]！！
