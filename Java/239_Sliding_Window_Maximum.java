@@ -1,3 +1,41 @@
+// 花花酱的单调队列解法
+// Time complexity: O(n)
+// Space complexity: O(k)
+
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        if (k == 0) return nums;
+        
+        int[] res = new int[nums.length - k + 1];
+        Deque<Integer> monoque = new LinkedList<>();
+        
+        for (int i = 0; i < nums.length; i++){
+            // 如果当前比队列头部大，push到单调队列队尾(队头最大)
+            // 重点：push一个元素的时候，会把队列里面所有比它小的元素都删掉
+            while (monoque.size() > 0 && nums[i] >= nums[monoque.getLast()])
+                monoque.removeLast();
+            monoque.addLast(i);
+            
+            //如果是在滑窗范围内，把队列头（max）放入答案
+            if (i - k + 1 >= 0)
+                res[i - k + 1] = nums[monoque.getFirst()];
+            
+            // 当滑窗最左边index比queue中最大的元素index还要大，说明最大值已经失效了
+            if (i - k + 1 >= monoque.getFirst())
+                monoque.removeFirst();
+        }
+        return res;
+    }
+}
+// faster than 78.87% of Java
+
+
+
+
+
+
+
+
 // Source: https://leetcode.com/problems/sliding-window-maximum/
 
 class Solution {
