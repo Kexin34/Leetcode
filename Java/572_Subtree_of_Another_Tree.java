@@ -15,6 +15,7 @@ class Solution {
             return false;
         if (s.val != t.val) 
             return false;
+        
         // 说明两树都没有到达最后，且目前都一致，继续向下递归检查
         return isIndentical(s.left, t.left) && isIndentical(s.right, t.right);
     }
