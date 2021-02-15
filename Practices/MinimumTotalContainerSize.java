@@ -27,6 +27,7 @@ public class MinimumTotalContainerSize {
             if (start == jobs.length) return 0;
             return Integer.MAX_VALUE;
         }
+        
         if (dp[start][days] != null) return dp[start][days];
         int cur = Integer.MAX_VALUE, max = 0;
         for (int i = start; i < jobs.length; i++) {
