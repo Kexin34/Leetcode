@@ -1,9 +1,6 @@
-// 解法：区间调度 模板
-
 class Solution {
-    public int eraseOverlapIntervals(int[][] intervals) {
-        int n = intervals.length;
-        return n - intervalSchedule(intervals);
+    public int findMinArrowShots(int[][] points) {
+        return intervalSchedule(points);
     }
     
     // 区间调度模板
@@ -29,7 +26,8 @@ class Solution {
         // 把所有与 x 区间相交的区间从区间集合 intvs 中删除。
         for (int [] interval: intervals){
             int start_time = interval[0];
-            if (start_time >= x_end){
+            // 模板修改： 把 >= 改成 > 就行了
+            if (start_time > x_end){
                 // 找到下一个选择的区间了
                 count++;
                 x_end = interval[1];
@@ -38,4 +36,4 @@ class Solution {
         return count;
     }
 }
-// faster than 58.85% of Java 
+// faster than 99.59% of Java 
