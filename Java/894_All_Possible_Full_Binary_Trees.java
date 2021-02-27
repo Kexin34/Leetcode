@@ -1,101 +1,59 @@
-// Method 1 : Recursive
+// 解法一：递归（无memo）
 class Solution {
     public List<TreeNode> allPossibleFBT(int N) {
         List<TreeNode> ans = new ArrayList<TreeNode>();
-        if (N == 1) 
+        // 两个based cases：
+        if (N % 2 == 0) return ans;
+        if (N == 1) {
             ans.add(new TreeNode(0));
-        else if (N % 2 != 0){
-            for (int i = 2; i <= N; i += 2){ //可用的头
-                List<TreeNode> leftBranch = allPossibleFBT(i - 1);
-                List<TreeNode> rightBranch = allPossibleFBT(N - i);
-                
-                for (Iterator<TreeNode> left_iter = leftBranch.iterator(); left_iter.hasNext();){
-                    TreeNode left = left_iter.next();
-                    for (Iterator<TreeNode> right_iter = rightBranch.iterator(); right_iter.hasNext();){
-                        TreeNode right = right_iter.next();
-                        TreeNode tree = new TreeNode(0);
-                        
-                        /* If we're using the last right branch, then this will be the last time this left branch 
-                           is used and can hence be shallow copied, otherwise the tree will have to be cloned 
-                        */
-                        tree.left = right_iter.hasNext() ? clone(left) : left;
-                        /* If we're using the last left branch, then this will be the last time this right branch 
-                           is used and can hence be shallow copied, otherwise the tree will have to be cloned 
-                        */
-                        tree.right = left_iter.hasNext() ? clone(right) : right;
-                        
-                        ans.add(tree);
-                    }
+            return ans;
+        }
+        for (int i = 1; i < N; i+= 2) {
+            // 遍历递归返回的左子树节点
+            for (TreeNode left : allPossibleFBT(i)){
+                // 遍历递归返回的右子树节点
+                for (TreeNode right : allPossibleFBT(N - i - 1)){
+                    // 构建父子关系
+                    TreeNode root = new TreeNode(0);
+                    root.left = left;
+                    root.right = right;
+                    ans.add(root);
                 }
             }
         }
         return ans;
     }
-    
-    private TreeNode clone(TreeNode tree){
-        if (tree == null) return null;
-        TreeNode newTree = new TreeNode(tree.val);
-        newTree.left = clone(tree.left);
-        newTree.right = clone(tree.right);
-        return newTree;
-    }
 }
-//faster than 43.82% of Java
+// 2 ms, faster than 64.78% of Java
 
 
-
-// Method 2: Iterative
+// 解法二: DP （最优解）
 class Solution {
     public List<TreeNode> allPossibleFBT(int N) {
-        List<TreeNode> ans = new ArrayList<TreeNode>();
-        if (N % 2 == 0)
-            return ans;
-        else if (N == 1){
-            ans.add(new TreeNode(0));
-            return ans;
-        }
-        // Build up a cache of a all possible FBT for the N - 2 levels
-        // these levels will be linked together as a graph and should not be returned
-        List<List<TreeNode>> cache = new ArrayList<List<TreeNode>>();
-        cache.add(new ArrayList<TreeNode>());
-        cache.get(0).add(new TreeNode(0));
-        for (int root = 1; root < N / 2; root++){
-            List<TreeNode> new_root = new ArrayList<TreeNode>();
-            for (int left_size = 0; left_size < root; ++left_size){
-                for (TreeNode left : cache.get(left_size)){
-                    for (TreeNode right : cache.get(root - left_size - 1)){
-                        TreeNode new_tree = new TreeNode(0);
-                        new_tree.left = left;
-                        new_tree.right = right;
-                        new_root.add(new_tree);
+        if (N % 2 == 0) return new ArrayList<>();
+        List<TreeNode>[] dp = new List[N + 1];
+        dp[0] = new ArrayList<TreeNode>();
+        dp[0].add(null);
+        dp[1] = new ArrayList<TreeNode>();
+        dp[1].add(new TreeNode(0));
+        
+        for (int i = 3; i <= N; i+= 2) {
+            dp[i] = new ArrayList<TreeNode>();
+            for (int j = 1; j < i; j += 2){//左子树个数
+                int k = i - j - 1;// 右子树个数
+                // 把左右子树挑出来两两组合
+                for (TreeNode left : dp[j]) {
+                    for (TreeNode right: dp[k]){
+                        TreeNode root = new TreeNode(0);
+                        root.left = left;
+                        root.right = right;
+                        dp[i].add(root);
                     }
                 }
             }
-            cache.add(new_root);
         }
-        // Cached values are linked together and must be cloned to be unlinked trees before returning
-        for (int root = 0; root < N / 2; ++root){
-            for (TreeNode left : cache.get(root)){
-                for (TreeNode right : cache.get(N / 2 - root - 1)){
-                    TreeNode new_tree = new TreeNode(0);
-                    new_tree.left = clone(left);
-                    new_tree.right = clone(right);
-                    ans.add(new_tree);
-                }
-            }
-        }
-        return ans;
-    }
-
-    private TreeNode clone(TreeNode tree){
-        if (tree == null) return null;
-        TreeNode newTree = new TreeNode(tree.val);
-        newTree.left = clone(tree.left);
-        newTree.right = clone(tree.right);
-        return newTree;
+        return dp[N];
     }
 }
-
-//faster than 44.26% of Java
-
+// 1 ms, faster than 99.11% of Java 
 

@@ -1,5 +1,7 @@
 // Solution#1: using min/max range to check the node value
 // 递归法，判断左 MAX < 根 < 右 MIN
+// 时间：O(N), 空间：O(H)
+
 class Solution {
     public boolean isValidBST(TreeNode root) {
         if (root == null) return true;
@@ -24,6 +26,7 @@ class Solution {
 
 // solution #2 : 递归版-中序遍历, check if the current node > previous node (if sorted)
 // 中序遍历，如果中序遍历得到的节点的值小于等于前一个 preVal，说明不是二叉搜索树
+// 时间：O(N), 空间：O(H)
 
 class Solution {
     private TreeNode prev;

@@ -49,11 +49,12 @@ class Solution {
             ans.add(node.val);
             // want to follow the order Left -> Right (preorder)
             // need to push right to left, thus need to revert the children
-            Collections.reverse(node.children);
-            for (Node child : node.children)
-                stack.push(child);
+            
+            // 重点：children从右到左压入（从左到右出栈）
+            for (int i = node.children.size() - 1; i >= 0; i--)
+                stack.push(node.children.get(i));
         }
         return ans;
     }
 }
-//faster than 6.33% of Java
+// 2 ms, faster than 47.23% of Java
