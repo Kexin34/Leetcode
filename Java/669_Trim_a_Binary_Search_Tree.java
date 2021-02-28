@@ -1,4 +1,7 @@
 // 解法：递归
+// There 3 cases in total depends on the root value and L, R
+// Time complexity: O(n)
+// Space complexity: O(1)
 
 class Solution {
     public TreeNode trimBST(TreeNode root, int low, int high) {
