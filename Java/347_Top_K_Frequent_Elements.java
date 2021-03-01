@@ -37,3 +37,43 @@ class Solution {
 //faster than 55.78% of Java 
 // O(nlogk) time & O(n) space
 
+
+
+
+
+// 桶排序
+// Time complexity: O(n)
+// Space complexity: O(n)
+class Solution {
+    public int[] topKFrequent(int[] nums, int k) {
+        List<Integer>[] bucket = new List[nums.length + 1];
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+
+        for (int n : nums) 
+            map.put(n, map.getOrDefault(n, 0) + 1);
+        
+        // 对于哈希表每个元素，放入对应frequ的桶中
+        for (int key : map.keySet()) {
+            int freq = map.get(key);
+            if (bucket[freq] == null) {
+                bucket[freq] = new ArrayList<>();
+            }
+            bucket[freq].add(key);
+        }
+        // 临时用作答案，最后转换成数组返回
+        List<Integer> res = new ArrayList<>();
+        
+        // 从频率最高的桶开始向答案添加元素
+        for (int i = bucket.length - 1; i >= 0 && res.size() < k; i--) {
+            if (bucket[i] != null)  
+                res.addAll(bucket[i]);
+        }
+        // 转换成数组返回
+        int[] result = new int[k];
+        for (int i = 0; i < res.size(); i++)
+            result[i] = res.get(i);        
+        return result;
+    }
+}
+// Runtime: 12 ms, faster than 32.76% of Java 
+

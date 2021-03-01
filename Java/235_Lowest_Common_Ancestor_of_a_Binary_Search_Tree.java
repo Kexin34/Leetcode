@@ -1,3 +1,20 @@
+// 暴力递归
+// Time complexity: O(n)
+// Space complexity: O(n)
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if (root.val < p.val && root.val < q.val)
+            return lowestCommonAncestor(root.right, p, q);
+        else if (root.val > p.val && root.val > q.val)
+            return lowestCommonAncestor(root.left, p, q);
+        else
+            return root;
+    }
+}
+// Runtime: 7 ms, faster than 14.04% of Java 
+
+
+// 优化后：递归
 class Solution {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         // 规定p.val < q.val
@@ -17,3 +34,23 @@ class Solution {
 }
 // faster than 100.00% of Java
 // Time: O(N), space : O(N)
+
+
+
+
+// 改成迭代版
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        TreeNode node = root;
+        while (node != null){
+            if (node.val < p.val && node.val < q.val)
+                node = node.right;
+            else if (node.val > p.val && node.val > q.val)
+                node = node.left;
+            else
+                return node;
+        }
+        return null;
+    }
+}
+// Runtime: 12 ms, faster than 5.34% of Java 

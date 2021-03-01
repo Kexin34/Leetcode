@@ -1,5 +1,22 @@
 // 解法一：递归（好理解，非最优）
+class Solution {
+    public int pathSum(TreeNode root, int sum) {
+        if (root == null) return 0;
+        return count(root, sum) 
+            + pathSum(root.left, sum) + pathSum(root.right, sum);
+    }
+    
+    public int count(TreeNode root, int sum){
+        if (root == null) return 0;
+        return (root.val == sum ? 1 : 0) 
+            + count(root.left, sum - root.val) + count(root.right, sum - root.val);
+    }
+}
+// faster than 35.21% of Java
+// Time complexity: O(n^2)
+// Space complexity: O(n)
 
+//同样解法，注释版
 class Solution {
     //PathSum 函数：给他一个节点和一个目标值，他返回以这个节点为根的树中，和为目标值的路径总数。
     public int pathSum(TreeNode root, int sum) {
@@ -23,14 +40,45 @@ class Solution {
         return isMe + leftBrother + rightBrother;// 我这能凑这么多个
     }
 }
-
-
 //faster than 56.42% of Java 
 
 
 
 
 // 解法二： 前缀和，递归（最优解法）
+// Time complexity: O(n)
+// Space complexity: O(h)
+class Solution {
+    int count = 0;
+    HashMap<Integer, Integer> preSum = new HashMap<>();
+    
+    public int pathSum(TreeNode root, int sum) {
+        preSum.put(0, 1); // sum = 0的次数是1
+        helper(root, 0, sum);
+        return count;
+    }
+    private void helper(TreeNode root, int curSum, int sum){
+        if (root == null) return;
+
+        curSum += root.val;  // cur_sum = sum(nums[0:i])
+        // 重点：check how many arrays nums[0:j] (j < i) that has sum (cur_sum – k)
+        // then there are the same number of arrays nums[j+1: i] that have sum k.
+        count += preSum.getOrDefault(curSum - sum, 0);// 
+        preSum.put(curSum, preSum.getOrDefault(curSum, 0) + 1); // 更新prefixSum[i时候sum]的个数
+
+        // 左右递归计算
+        helper(root.left, curSum, sum);
+        helper(root.right, curSum, sum);
+
+        // backtrack
+        preSum.put(curSum, preSum.get(curSum) - 1);
+    }
+}
+// Runtime: 3 ms, faster than 61.09% of Java
+
+
+
+// 注释版
 class Solution {
     // map：前缀和 -> 该前缀和出现的次数
     HashMap<Integer, Integer> preSum = new HashMap<>();

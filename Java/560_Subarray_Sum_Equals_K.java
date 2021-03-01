@@ -1,4 +1,6 @@
 // 原始解法：前缀和
+// Time complexity: O(n^2)
+// Space complexity: O(n)
 class Solution {
     public int subarraySum(int[] nums, int k) {
         int n = nums.length;
@@ -25,6 +27,30 @@ class Solution {
 
 // 优化解法：直接记录下有几个 sum[j] 和 sum[i] - k 相等，直接更新结果
 // 借助哈希表去除不必要的嵌套循环，在记录前缀和的同时记录该前缀和出现的次数。
+// Time complexity: O(n)
+// Space complexity: O(n)
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+        HashMap<Integer, Integer> preSum = new HashMap<>();
+        int count = 0;
+        int cur_sum = 0;
+        preSum.put(0, 1); // sum为0的preFix有一个
+        
+        for (int num : nums){
+            // cur_sum[0]...[i]的总和
+            cur_sum += num;
+            
+            // check how many arrays nums[0:j] (j < i) that has sum (cur_sum – k),
+            // then there are the same #arrays nums[j+1: i目前] that have sum k.
+            count += preSum.getOrDefault(cur_sum - k, 0);
+            preSum.put(cur_sum, preSum.getOrDefault(cur_sum, 0) + 1);
+        }
+        return count;
+    }
+}
+// Runtime: 17 ms, faster than 96.12% of Java
+
+//比较啰嗦的解法
 class Solution {
     public int subarraySum(int[] nums, int k) {
         int n = nums.length;
