@@ -18,3 +18,27 @@ class Solution {
     }
 }
 // faster than 100.00% of Java
+
+
+// 解法：分治
+// T(n) = O(1) + T(n/2) = O(logn)
+// Average: O(logn)
+// Worst: O(n)
+class Solution {
+    public int findMin(int[] nums) {
+        return findMin(nums, 0, nums.length - 1);
+    }
+    
+    public int findMin(int[] nums, int l, int r){
+        // Based case: Only 1 or 2 elements
+        if (l + 1 >= r) return Math.min(nums[l], nums[r]);
+        
+        // If sotred
+        if (nums[l] < nums[r]) return nums[l];
+        
+        int mid = l + (r - l) / 2;
+        return Math.min(findMin(nums, l, mid), 
+                       findMin(nums, mid + 1, r));
+    }
+}
+// Runtime: 0 ms, faster than 100.00% of Java 

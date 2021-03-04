@@ -19,6 +19,24 @@ class Solution {
 // Space: O(N) stack space utilized for recursion.
 
 
+// 我写的递归
+class Solution {
+    public ListNode swapPairs(ListNode head) {
+        if (head == null || head.next == null) return head;
+        ListNode node = head.next;
+        head.next = swapPairs(node.next);
+        node.next = head;
+        return node;
+    }
+}
+// faster than 100.00% of Java
+// Time : O(N) where N is the size of the linked list.
+// Space: O(N) stack space utilized for recursion.
+
+
+
+
+
 
 // 解法二：遍历
 class Solution {
