@@ -1,4 +1,6 @@
 // 思路：归并排序，找中点和合并操作
+// Time complexity: O(nlogn)
+// Space complexity: O(logn)
 
 class Solution {
     public ListNode sortList(ListNode head) {
@@ -12,7 +14,7 @@ class Solution {
             slow = slow.next;
             fast = fast.next.next;
         }
-        //slow 刚好指向前边一半节点的最后一个节点
+        //slow 刚好指向前边一半节点的最后一个节点,记得要断开！！
         ListNode rightHead = slow.next;
         slow.next = null;
         
@@ -42,4 +44,4 @@ class Solution {
     }
 }
 // faster than 98.23% of Java
-// 时间复杂度O(nlogn)
+

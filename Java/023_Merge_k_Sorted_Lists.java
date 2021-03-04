@@ -60,8 +60,52 @@ class Solution {
 //faster than 81.64% of Java
 
 
+// Merge Sort （没有两两合并优化快，但是好理解）
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        if(lists.length == 0) return null;
+        if(lists.length == 1) return lists[0];
+        return merge(lists, 0, lists.length - 1);
+    }
+    
+    public ListNode merge(ListNode[] lists, int l, int r){
+        // 3个base cases
+        if (l > r) return null;    // 空
+        if (l == r) return lists[l];    //只有1个，直接返回
+        if (l + 1 == r) // 如果只剩下两个list，直接merge
+            return mergeTwoLists(lists[l], lists[r]);
+        
+        int mid = l + (r - l) / 2;
+        ListNode l1 = merge(lists, l, mid);
+        ListNode l2 = merge(lists, mid + 1, r);
+        return mergeTwoLists(l1, l2);
+    }
+    
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2){
+        ListNode dummy = new ListNode(-1);// 哨兵节点
+        ListNode cur = dummy;
+        while (l1 != null && l2 != null) {
+            if (l1.val > l2.val){
+                cur.next = new ListNode(l2.val);
+                l2 = l2.next;
+            }else{
+                cur.next = new ListNode(l1.val);
+                l1 = l1.next;
+            }
+            cur = cur.next;
+        }
+        // 有可能其中一个还有node，判断
+        cur.next = l1 == null ? l2 : l1;
+        return dummy.next;
+    }
+}
+// Runtime: 5 ms, faster than 47.85% of Java
+
 
 // 解法三：优先队列
+// Time complexity: O(nklogk)
+// Space complexity: O(k)
+
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
         if (lists.length == 0) return null;
