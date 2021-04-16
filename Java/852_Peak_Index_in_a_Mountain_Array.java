@@ -15,3 +15,27 @@ class Solution {
     }
 }
 // faster than 100.00% of Java 
+
+
+// 套用模板写的：
+class Solution {
+    public int peakIndexInMountainArray(int[] arr) {
+        int start = 1, end = arr.length - 2;
+        while (start + 1 <  end) {
+            int mid = start + (end - start) / 2;
+            if (arr[mid] < arr[mid - 1]) {
+                end = mid;
+            } else if (arr[mid] < arr[mid + 1]) {
+                start = mid;
+            } else {
+                return mid;
+            }
+        }
+        if (arr[start] < arr[end]) {
+            return end;
+        } else { 
+            return start;
+        }
+    }
+}
+// faster than 100.00% of Java 

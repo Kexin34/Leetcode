@@ -2,22 +2,27 @@
 // 思路：跳过重复元素，mid值和end值比较，分为两种情况进行处理
 class Solution {
     public int findMin(int[] nums) {
-        if (nums.length == 0) return -1;
-        int left = 0, right = nums.length - 1;
-        
-        while (left < right){
-            int mid = left + (right - left) / 2;
-            if (nums[mid] < nums[right])    //数组没有旋转或者旋转点在左半段
-                right = mid;                // 去左半边继续搜索
-            else if (nums[mid] > nums[right])
-                left = mid + 1;             // 去右半段查找
-            else              //如果两者重复，右指针左移一位，略过一个相同数字
-                right--;
+        int start = 0, end = nums.length - 1;
+        while (start + 1 < end){
+            int mid = start + (end - start) / 2;
+            // 如果mid小于end，说明右半段有序，去左半边继续搜索
+            if (nums[mid] < nums[end])
+                end = mid;
+            // 如果mid大于end，说明右边已rotate，最小数在右边
+            else if (nums[mid] > nums[end])
+                start = mid;
+            //如果两者重复，右指针左移一位，略过一个相同数字
+            else
+                end--;
         }
-        return nums[right];
+        if (nums[start] < nums[end])
+            return nums[start];
+        else
+            return nums[end];
     }
 }
-//faster than 100.00% of Java
+// 0 ms, faster than 100.00% of Java
+// O(logn)
 // 在最坏的情况下，比如数组所有元素都相同，时间复杂度会升到 O(n)
 
 

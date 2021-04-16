@@ -39,16 +39,22 @@ class Solution {
 // 解法（最优）：从左下角开始，如果大于目标，向上走，如果小于目标，向右走
 class Solution {
     public boolean searchMatrix(int[][] matrix, int target) {
-        if (matrix == null || matrix.length == 0 || matrix[0].length == 0 )
-            return false;
-        int m = matrix.length, n = matrix[0].length;
-        // 从左下角开始
-        int row = m - 1;
-        int col = 0;
-        while (row >= 0 && col < n){
-            if (matrix[row][col] > target) row--;//向上走
-            else if (matrix[row][col] < target) col++;//向右走
-            else return true;                   // 找到
+        int m = matrix.length;
+        int n = matrix[0].length;
+        
+        //从左下角往右上角走，(x,y)=(m-1,0)
+        int x = m - 1;
+        int y = 0;
+        while (x >= 0 && y <= n - 1){
+            //如果matrix[x][y]比target小，则往右走
+            if (matrix[x][y] < target)
+                y++;
+            //如果matrix[x][y]比target大，则往上走
+            else if (matrix[x][y] > target)
+                x--;
+            //如果matrix[x][y]=target，则找到一个相等的值
+            else 
+                return true;
         }
         return false;
     }
