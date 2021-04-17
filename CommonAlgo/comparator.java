@@ -35,3 +35,15 @@ Comparator c3 = new Comparator {
     return o1 < o2 ? -1 : 1;
   }
 }
+
+
+
+
+354. Russian Doll Envelopes
+//  先把第一维排个序（从小到大）int[][] envelopes
+  Arrays.sort(envelopes, new Comparator<int[]>(){
+    @Override
+    public int compare(int[] e1, int[] e2){
+        return Integer.compare(e1[0], e2[0]);
+    }
+  });

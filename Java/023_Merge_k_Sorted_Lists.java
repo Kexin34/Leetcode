@@ -53,12 +53,29 @@ class Solution {
         return lists[0];
     }
     
-    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-        //省略
+    private ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        if (l1 == null && l2 == null) return null;
+        if (l1 == null) return l2;
+        if (l2 == null) return l1;
+        
+        ListNode dummy = new ListNode(-1);
+        ListNode cur = dummy;
+        
+        while (l1 != null && l2 != null){
+            if (l1.val < l2.val){
+                cur.next = l1;
+                l1 = l1.next;
+            }else {
+                cur.next = l2;
+                l2 = l2.next;
+            }
+            cur = cur.next;
+        }
+        cur.next = l1 == null ? l2 : l1;
+        return dummy.next;
     }
 }
-//faster than 81.64% of Java
-
+// Runtime: 1 ms, faster than 100.00% of Java
 
 // Merge Sort （没有两两合并优化快，但是好理解）
 class Solution {
@@ -129,13 +146,14 @@ class Solution {
         ListNode dummy = new ListNode(-1);
         ListNode cur = dummy;
         
-        while (!pq.isEmpty()){  
+        while (!pq.isEmpty()){
             //出队列
-            cur.next = pq.poll();
+            ListNode smallHead = pq.poll();
+            cur.next = smallHead;
             cur = cur.next;
             //判断当前poll出的链表是否为空，不为空就重新将其再次入队
-            ListNode next = cur.next;
-            if (next != null) pq.add(next);
+            if (smallHead.next != null)
+                pq.add(smallHead.next);
         }
         return dummy.next;
     }

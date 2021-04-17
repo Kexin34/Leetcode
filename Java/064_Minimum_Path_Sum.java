@@ -55,24 +55,25 @@ class Solution {
 //【优化】DP：一维数组，滚动计算，减少memory空间消耗
 class Solution {
     public int minPathSum(int[][] grid) {
-        if(grid.length == 0 || grid[0].length == 0) return 0;
         int m = grid.length;
         int n = grid[0].length;
         int[] dp = new int[n];
         
-        for (int r = 0; r < m; r++){
-            for (int c = 0; c < n; c++){
-                if (c == 0)             // 只能从上侧走到该位置，垂直向下/向右走
-                    dp[c] = dp[c];
-                else if (r == 0)        //第一行每个只看同行左一个
-                    dp[c] = dp[c - 1];
+        for (int i = 0; i < m; i++){
+            for (int j = 0; j < n; j++){
+                if (j == 0) // 只能从上侧走到该位置，垂直向下/向右走
+                    dp[j] = dp[j];
+                else if (i == 0)  //第一行每个只看同行左一个
+                    dp[j] = dp[j - 1];
                 else
                     // dp[j]是本cell上一行，dp[j-1]是本cell左边格（已计算好了）
-                    dp[c] = Math.min(dp[c - 1], dp[c]);
+                    dp[j] = Math.min(dp[j], dp[j - 1]);
+                
                 // 最后统一加上本cell value
-                dp[c] += grid[r][c];
+                dp[j] += grid[i][j];
             }
         }
+        
         // 当前dp数组存的是最后一行计算完的结果，最后一格就是答案
         return dp[n - 1];
     }
