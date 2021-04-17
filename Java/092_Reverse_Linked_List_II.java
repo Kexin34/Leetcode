@@ -4,7 +4,7 @@ class Solution {
     public ListNode reverseBetween(ListNode head, int m, int n) {
         ListNode dummy = new ListNode(-1);  // 哑节点，指向链表的头部
         dummy.next = head;
-        ListNode pre = dummy;           // pre 指向要翻转子链表的第一个节点
+        ListNode pre = dummy;           // pre 指向要翻转子链表的前一个节点
         
         for (int i = 1; i < m; i++)
             pre = pre.next;
@@ -24,6 +24,44 @@ class Solution {
     }
 }
 //  faster than 100.00% of Java
+
+
+
+
+
+class Solution {
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        if (head == null) return null;
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        head = dummy;           // 易错点：从0点开始计算移动
+        
+        for (int i = 1; i < left; i++){
+            if (head == null) return null;
+            head = head.next;
+        }
+        // 这时head在leftNode前一位
+        ListNode preLeft = head;
+        ListNode leftNode = head.next;
+        ListNode rightNode = leftNode;
+        ListNode postRight = leftNode.next;  // postRight一直在rightNode后一位
+        
+        for (int i = left; i < right; i++) {
+            if (postRight == null) return null;
+            // 开始修改指针(postRight倒着指向right) 
+            ListNode tempNext = postRight.next;
+            postRight.next = rightNode;
+            rightNode = postRight;  // 两个指针都向前走一步
+            postRight = tempNext;
+        }
+        // 最后反着连回左右两边
+        leftNode.next = postRight;
+        preLeft.next = rightNode;
+        
+        return dummy.next;
+    }
+}
+// Runtime: 0 ms, faster than 100.00% of Java
 
 
 

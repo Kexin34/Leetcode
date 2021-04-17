@@ -1,4 +1,4 @@
-// 思路：归并排序，找中点和合并操作
+// 解法1：归并排序，找中点和合并操作
 // Time complexity: O(nlogn)
 // Space complexity: O(logn)
 
@@ -45,3 +45,67 @@ class Solution {
 }
 // faster than 98.23% of Java
 
+
+// 解法二：快速排序
+class Solution {
+    public ListNode sortList(ListNode head) {
+        if (head == null || head.next == null) return head;
+        // 让pivot为中间点
+        ListNode mid = findMidPoint(head);
+        
+        //把当前分为三段（大于，等于，小于）
+        ListNode leftDummy = new ListNode(-1), leftTail = leftDummy;
+        ListNode rightDummy = new ListNode(-1), rightTail = rightDummy;
+        ListNode middleDummy = new ListNode(-1), middleTail = middleDummy;
+        
+        while (head != null) {
+            if (head.val < mid.val){
+                leftTail.next = head;
+                leftTail = leftTail.next;
+            }else if (head.val > mid.val){
+                rightTail.next = head;
+                rightTail = rightTail.next;
+            }else{
+                middleTail.next = head;
+                middleTail = middleTail.next;
+            }
+            head = head.next;
+        }
+        leftTail.next = null;
+        rightTail.next = null;
+        middleTail.next = null;
+        
+        // 三段形成好了，接下来把左右两段递归
+        ListNode left = sortList(leftDummy.next);
+        ListNode right = sortList(rightDummy.next);
+        
+        return merge(left, middleDummy.next, right);
+    }
+    
+    private ListNode findMidPoint(ListNode head){
+        ListNode slow = head, fast = head.next;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+    
+    private ListNode merge(ListNode left, ListNode middle, ListNode right){
+        ListNode dummy = new ListNode(-1);
+        ListNode tail = dummy;
+        
+        tail.next = left; tail = getTail(tail);
+        tail.next = middle; tail = getTail(tail);
+        tail.next = right;     tail = getTail(tail);
+        return dummy.next;
+    }
+    
+    private ListNode getTail(ListNode head) {
+        if (head == null) return null;
+        while (head.next != null)
+            head = head.next;
+        return head;
+    }
+}
+// Runtime: 7 ms, faster than 47.41% of Java

@@ -70,3 +70,22 @@ class Solution {
     }
 }
 // // 100%
+
+
+
+// Divide & Conquer
+class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        if (root == null) return res;
+        
+        List<Integer> left = preorderTraversal(root.left);
+        List<Integer> right = preorderTraversal(root.right);
+        
+        res.add(root.val);
+        res.addAll(left);
+        res.addAll(right);
+        return res;
+    }
+}
+// 0 ms, faster than 100.00% of Java
