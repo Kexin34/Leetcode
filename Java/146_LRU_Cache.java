@@ -1,12 +1,14 @@
 // 一样解法，没有手写双向链表数据结构
 class LRUCache {
-    Node head = new Node(0, 0);
-    Node tail = new Node(0, 0);
     Map<Integer, Node> map = new HashMap();
     int capacity;
+    Node head;
+    Node tail;
 
     public LRUCache(int _capacity) {
         capacity = _capacity;
+        head = new Node(0, 0);
+        tail = new Node(0, 0);
         head.next = tail;
         tail.prev = head;
     }  
@@ -16,22 +18,22 @@ class LRUCache {
         if (map.containsKey(key)){
             Node node = map.get(key);
             remove(node);
-            insert(node);
+            insertToHead(node);
             return node.value;
         }else
             return -1;
     }
     
     public void put(int key, int value) {
+        Node nodeToAdd = new Node(key, value);
         // 如果当前key已存在，更新（先移除，再添加）
         if (map.containsKey(key))
             remove(map.get(key));
         // 如果cache满了，把移除链表最后一个node（再添加新node
-        if(map.size() == capacity) {
+        if(map.size() == capacity) 
           remove(tail.prev);
-        }
         
-        insert(new Node(key, value));
+        insertToHead(nodeToAdd);
     }
   
     // 辅助函数：用于链表 & 哈希表的删除节点
@@ -42,7 +44,7 @@ class LRUCache {
       }
     
     // 辅助函数：用于链表 & 哈希表的插入节点
-    private void insert(Node node){
+    private void insertToHead(Node node){
         map.put(node.key, node);
         node.next = head.next;
         head.next.prev = node;
@@ -53,14 +55,14 @@ class LRUCache {
     class Node {
         Node prev, next;
         int key, value;
-        Node(int _key, int _value){
-            key = _key;
-            value = _value;
+        public Node(int _key, int _value){
+            this.key = _key;
+            this.value = _value;
         }
     }
 }
-//  faster than 18.00% of Java
-
+// Runtime: 14 ms, faster than 45.15% of Java 
+// Time Complexity: Put O(1)  Get O(1)
 
 
 

@@ -71,6 +71,4 @@ public class Codec {
         return root;
     }
 }
-// Your Codec object will be instantiated and called as such:
-// Codec codec = new Codec();
-// codec.deserialize(codec.serialize(root));
+// Runtime: 14 ms, faster than 44.74% of Java
