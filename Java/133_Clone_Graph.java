@@ -66,22 +66,19 @@ class Solution {
         
         queue.offer(node);
         //先copy生成第一个节点,并放入map
-        Node n = new Node();
-        n.val = node.val;
-        map.put(n.val, n);
+        map.put(node.val, new Node(node.val));
 
         while (!queue.isEmpty()){
             Node cur = queue.poll();
-            for (Node temp : cur.neighbors){
+            
+            for (Node neighbor : cur.neighbors){
                 //若没有生成的节点，就生成并放入map
-                if (!map.containsKey(temp.val)){
-                    n = new Node(temp.val);
-                    n.neighbors = new ArrayList<>();
-                    map.put(n.val, n);
-                    queue.offer(temp);  //注意，压入的是原链的邻居节点
+                if (!map.containsKey(neighbor.val)){
+                    map.put(neighbor.val, new Node(neighbor.val));
+                    queue.offer(neighbor);  //注意，压入的是原链的邻居节点
                 }
                 //更新目前新链node的邻居(邻居也是新链的node)
-                map.get(cur.val).neighbors.add(map.get(temp.val));
+                map.get(cur.val).neighbors.add(map.get(neighbor.val));
             }
         }
         return map.get(node.val);
