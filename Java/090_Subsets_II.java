@@ -1,30 +1,29 @@
+// Conmibation模板
 // DFS + 回溯
 
 class Solution {
+    List<List<Integer>> res = new ArrayList<>();
+    
     public List<List<Integer>> subsetsWithDup(int[] nums) {
-        List<List<Integer>> res = new LinkedList<>();
-        if (nums.length == 0) return res;
         Arrays.sort(nums);
-        
-        List<Integer> list = new ArrayList<>();
-        dfs(nums, 0, res, list);
+        for (int i = 0; i <= nums.length; i++)
+            dfs(nums, i, 0, new ArrayList<Integer>());
         return res;
     }
     
-    private void dfs(int[] nums, int start, List<List<Integer>> res, List<Integer> list ){
-        res.add(new ArrayList(list));
-        if (list.size() == nums.length)     // 满足结束条件
-            return;
-        for (int i = start; i < nums.length; i++){  
-            // 重点：对于重复数字，only the first number can be used.
-            if (i > start && nums[i] == nums[i - 1]) continue;
-            list.add(nums[i]);              // 做选择
-            dfs(nums, i + 1, res, list);    // dfs
-            list.remove(list.size() - 1);   // 撤销选择
+    private void dfs(int[] nums, int n, int start, ArrayList<Integer> path){
+        if (path.size() == n)
+            res.add(new ArrayList(path));
+        for (int i = start; i < nums.length; i++){
+            if (i > start && nums[i] == nums[i - 1]) continue;  // 跳过重复元素
+            path.add(nums[i]);
+            dfs(nums, n, i + 1, path);
+            path.remove(path.size() - 1);
         }
-        return;
     }
 }
-//  faster than 99.91% of Java
+
+// Runtime: 1 ms, faster than 99.61% of Java
+
 // Time complexity: O(2^n * n)
 // Space complexity: O(n)

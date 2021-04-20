@@ -26,7 +26,7 @@ class Solution {
     }
 }
 // faster than 100.00% of Java
-// Time complexity: O(N×2^N) to generate all subsets and then copy them into output list.
+// Time complexity: O(N×2^N) to generate all subsets(2^N) and then copy them into output list.
 // Space: O(N×2^N) to keep all the subsets of length N, since each of N elements could be present or absent.
 
 

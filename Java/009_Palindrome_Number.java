@@ -20,3 +20,5 @@ class Solution {
         return x == right || x == right / 10;
     }
 }
+
+// Runtime: 6 ms, faster than 99.96% of Java
