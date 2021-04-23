@@ -1,41 +1,33 @@
 // 解法：DFS+回溯 （花花permutation模板）
 class Solution {
-    List<List<Integer>> res;
-    boolean[] used;
-    
+    List<List<Integer>> res = new ArrayList<>();
     public List<List<Integer>> permuteUnique(int[] nums) {
-        res = new LinkedList<>();
-        if (nums.length == 0) return res;
-        
-        Arrays.sort(nums);          //因为考虑重复元素，所以先sort
-        int n = nums.length;
-        ArrayList<Integer> path = new ArrayList<>();
-        used = new boolean[n];
-        
-        dfs(nums, path);
+        Arrays.sort(nums);
+        boolean[] visited = new boolean[nums.length];
+        dfs(nums, visited, new ArrayList<Integer>());
         return res;
     }
     
-    private void dfs(int[] nums, ArrayList<Integer> path){
+    private void dfs(int[] nums, boolean[] visited, ArrayList<Integer> path){
         if (path.size() == nums.length){
             res.add(new ArrayList(path));
             return;
         }
         for (int i = 0; i < nums.length; i++){
-            if (used[i]) continue;
+            if (visited[i] == true) continue;
             // 易错点：Same number can be only used once at each depth.
-            if (i > 0 && nums[i] == nums[i - 1] && !used[i - 1]) continue;
+            // visited[i - 1] == false: we can make sure that 1b cannot be choosed before 1a
+            if (i > 0 && nums[i] == nums[i - 1] && visited[i - 1] == false) continue;
             
-            used[i] = true;
+            visited[i] = true;
             path.add(nums[i]);
-            dfs(nums, path);
+            dfs(nums, visited, path);
             
-            path.remove(path.size() - 1);   // resume
-            used[i] = false;
+            visited[i] = false;
+            path.remove(path.size() - 1);
         }
-        return;
     }
 }
-// faster than 63.41% of Java
+//Runtime: 1 ms, faster than 99.35% of Java
 // Time complexity: O(n!)
 // Space complexity: O(n + k)

@@ -1,3 +1,32 @@
+// 本题是“向前型指针”题目，可以用【窗口类指针移动模板】来解
+
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        int i = 0; 
+        int j = 0;
+        int max = 0;
+        int[] map = new int[256];
+        
+        
+        for (i = 0; i < s.length(); i++){
+            while (j < s.length() && map[s.charAt(j)] == 0){
+                map[s.charAt(j)]++;
+                j++;
+            }
+            max = Math.max(max, j - i);// j 是第一个出界的，所以len不需要加一
+            map[s.charAt(i)]--;
+        }
+        return max;
+    }
+}
+// Runtime: 2 ms, faster than 99.80% of Java
+// Time: O(n)
+
+
+
+
+
+
 // 解法一：基础滑窗
 class Solution {
     public int lengthOfLongestSubstring(String s) {

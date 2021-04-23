@@ -16,6 +16,8 @@ class Solution {
     }
 }
 //  faster than 100.00% of Java
+// Time complexity: O(n)
+// Space complexity: O(n)
 
 
 // Interation

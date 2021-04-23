@@ -44,3 +44,50 @@ class Solution {
 }
 // faster than 49.29% of Java
 
+
+
+
+// 本题是“向前型指针”题目，可以用窗口类指针移动模板来解
+class Solution {
+    public String minWindow(String s, String t) {
+        int minLen = Integer.MAX_VALUE;
+        String minStr = "";
+        int[] hash_s = new int[256];
+        int[] hash_t = new int[256];
+        
+        // Init target hashmap
+        for (char ch: t.toCharArray())
+            hash_t[ch]++;
+        
+        int i = 0, j = 0;
+        for (i = 0; i < s.length(); i++){
+            while (j < s.length() && !isContain(hash_s, hash_t)){
+                hash_s[s.charAt(j)]++;
+                j++;
+            }
+            // j首次出界，所以长度计算不用加一
+            if (isContain(hash_s, hash_t)){
+                if (j - i < minLen){
+                    minStr = s.substring(i, j);
+                    minLen = j - i;
+                }
+            }
+            // 收缩左边界
+            hash_s[s.charAt(i)]--;
+        }
+        return minStr;
+    }
+    
+    private boolean isContain(int[] hash_s, int[] hash_t){
+        for (int i = 0; i < 256; i++){
+            if (hash_t[i] > hash_s[i])
+                return false;
+        }
+        return true;
+    }
+}
+// Runtime: 51 ms, faster than 12.34% of Java
+// time: O(256*N)
+
+
+
