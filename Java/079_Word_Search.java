@@ -1,42 +1,39 @@
-//已经改成我自己的代码，不是抄袭的
+// DFS
+
 class Solution {
-    private char[][] board;
-    private int ROWS;
-    private int COLS;
+    int m, n;
     
     public boolean exist(char[][] board, String word) {
-        this.board = board;
-        this.ROWS = board.length;
-        this.COLS = board[0].length;
+        m = board.length;
+        n = board[0].length;
         
-        for (int row = 0; row < this.ROWS; ++row)
-            for (int col = 0; col < this.COLS; ++col)
-                if (this.backtrack(row, col, word, 0))
+        for (int i = 0; i < m; i++){
+            for (int j = 0; j < n; j++){
+                if (dfs(board, i, j, word, 0))
                     return true;
+            }
+        }
         return false;
     }
-    public boolean backtrack(int row, int col, String word, int index){
-        // chack if reach bottom case of the recursion
-        if (index >= word.length()) return true;
-        // check if the current state is invalid
-        if (row < 0 || row >= this.ROWS || col <0 || col >= this.COLS 
-            || this.board[row][col] != word.charAt(index))
+    
+    private boolean dfs(char[][] board, int i, int j, String word, int index){
+        // 易错点：先判断是否已经到达递归底部(落到word外面），然后再慢慢检查boundary
+        if (index == word.length()) return true;  
+        if (i < 0 || i >= m || j < 0 || j >= n || board[i][j] != word.charAt(index)) 
             return false;
         
-        // Explore the neighbors in DFS + backtracking
-        // 1. mark the current cell as visited
-        char cur = board[row][col];
-        this.board[row][col] = '#';
-
-        // 2. iterate through the four possible directions
-        boolean found = this.backtrack(row + 1, col, word, index + 1) 
-            || this.backtrack(row - 1, col, word, index + 1) 
-            || this.backtrack(row, col + 1, word, index + 1) 
-            || this.backtrack(row, col - 1, word, index + 1) ;
-
-        // 3. end of the exploration, revert the cell back to its original state.
-        this.board[row][col] = cur;
+        // mark the current cell as visited，之后要回溯复原的
+        char temp = board[i][j];
+        board[i][j] = '#';
+        
+        // 这里不用dirs反而更快， 更直接一些
+        boolean found = dfs(board, i + 1, j, word, index + 1) 
+            || dfs(board,i - 1, j, word, index + 1) 
+            || dfs(board,i, j + 1, word, index + 1) 
+            || dfs(board,i, j - 1, word, index + 1) ;
+        
+        board[i][j] = temp;
         return found;
     }
 }
-// faster than 55.21% of Java
+// Runtime: 56 ms, faster than 72.54% of Java

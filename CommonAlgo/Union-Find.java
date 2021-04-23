@@ -61,3 +61,11 @@ class UnionFind {
 // find就能以 O(1) 的时间找到某一节点的根节点，
 // 相应的，connected和union复杂度都下降为 O(1)。
 
+
+//find也可以写成：
+private int find(int x){
+    if (parent[x] == x)
+        return x;
+    return parent[x] = find(parent[x]);
+}
+
