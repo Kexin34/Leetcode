@@ -36,3 +36,42 @@ class Solution {
     }
 }
 //faster than 12.35% of Java
+
+
+
+// 九章- O(N^3)
+
+class Solution {
+    public int maxCoins(int[] nums) {
+        int n = nums.length;
+        int[][] dp = new int[n + 2][n + 2];// 两边添加个1方便计算
+        int[][] visited = new int[n + 2][n + 2];
+        
+        // 把原始数组转化为前后元素为1的数组
+        int[] arr = new int[n + 2];
+        arr[0] = 1;
+        arr[n + 1] = 1;
+        for (int i = 1; i <= n; i++)
+            arr[i] = nums[i - 1];
+        
+        return search(arr, dp, visited, 1, n);
+    }
+    
+    private int search(int[] arr, int[][] dp, int[][] visited, int left, int right){
+        // memorization
+        if (visited[left][right] == 1) 
+            return dp[left][right];
+        int res = 0;
+        // dp[i][j] = max(dp[i][k-1] + dp[k+1][j] + midValue)
+        for (int k = left; k <= right; ++k){
+            int midValue = arr[left - 1] * arr[k] * arr[right + 1];
+            int leftValue = search(arr, dp, visited, left, k - 1);
+            int rightValue = search(arr, dp, visited, k + 1, right);
+            res = Math.max(res, leftValue + midValue + rightValue);
+        }
+        visited[left][right] = 1;
+        dp[left][right] = res;
+        return res;
+    }
+}
+// Runtime: 217 ms, faster than 5.32% of Java

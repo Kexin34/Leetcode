@@ -1,5 +1,43 @@
-// 解法：两个stack，用queue模拟stack
 // 思路：用两个栈实现，一个最小栈始终保证最小值在顶部
+class MinStack {
+    Stack<Integer> stack;
+    Stack<Integer> min_stack;
+
+    /** initialize your data structure here. */
+    public MinStack() {
+        stack = new Stack<Integer>();
+        min_stack = new Stack<Integer>();
+    }
+    
+    public void push(int val) {
+        stack.push(val);
+        if (!min_stack.isEmpty()){
+            if (val < min_stack.peek())
+                min_stack.push(val);
+            else
+                min_stack.push(min_stack.peek());
+        }else
+            min_stack.push(val);
+    }
+    
+    public void pop() {
+        stack.pop();
+        min_stack.pop();
+    }
+    
+    public int top() {
+        return stack.peek();
+    }
+    
+    public int getMin() {
+        return min_stack.peek();
+    }
+}
+// Runtime: 4 ms, faster than 92.10% of Java 
+
+
+
+// 解法：两个stack，用queue模拟stack
 class MinStack {
     private Deque<Integer> stack;       // 数据栈
     private Deque<Integer> minStack;    // 辅助栈
@@ -15,7 +53,7 @@ class MinStack {
     public void push(int x) {
         // 数据栈和辅助栈一定会添加元素, min更新，辅助栈添加新min
         stack.offerFirst(x);
-        min = Math.min(min, x);
+        min = Math.misn(min, x);
         minStack.offerFirst(min);
     }
     

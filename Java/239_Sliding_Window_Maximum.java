@@ -79,3 +79,43 @@ class Solution {
         }
     }
 }
+
+
+
+
+
+// 九章
+// Deque, 维护单调递减。重要的是需要add和delete
+// frist[77321]last
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        int n = nums.length;
+        int[] res = new int[n - k + 1];
+        if (k == 0) return res;
+        Deque<Integer> deque = new ArrayDeque<Integer>();
+        // 初始化queue
+        for (int i = 0; i < k - 1; i++)
+            inQueue(deque, nums[i]);
+        
+        for (int i = k - 1; i < n; i++){
+            inQueue(deque, nums[i]);   // 添加
+            res[i + 1 - k] = deque.peekFirst();  // 单调递减队列的头部，一定最大
+            outQueue(deque, nums[i - k + 1]); // 移除
+        }
+        return res;
+    }
+    
+    // 从尾部添加
+    void inQueue(Deque<Integer> deque, int num){
+        while (!deque.isEmpty() && deque.peekLast() < num)
+            deque.pollLast();
+        deque.offer(num);
+    }
+    
+    // 从头部移除，如果头部不是目标，直接略过
+    void outQueue(Deque<Integer> deque, int num){
+        if (deque.peekFirst() == num)
+            deque.pollFirst();
+    }
+}
+// Runtime: 34 ms, faster than 32.14% of Java
