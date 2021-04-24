@@ -10,7 +10,7 @@ class Solution {
         }
     }
 }
-// faster than 19.70% of Java
+// Runtime: 1 ms, faster than 94.74% of Java 
 // Time : O(N) to swap N/2 element.
 // Space : O(1), it's a constant space solution.
 
@@ -21,16 +21,17 @@ class Solution {
         reverse(s, 0, s.length - 1);
     }
     
-    private void reverse(char[] s, int left, int right){
-        if (left >= right) return;
+    private void reverse(char[] s, int start, int end){
+        if (start >= end) return;
         
-        char tmp = s[left];
-        s[left++] = s[right];
-        s[right--] = tmp;
-        
-        reverse(s, left, right);
+        char temp = s[start];
+        s[start] = s[end];
+        s[end] = temp;
+        start++;
+        end--;
+        reverse(s, start, end);
     }
 }
-// faster than 67.85% of Java 
-// Time complexity :O(N) time to perform N/2N/2 swaps.
+// Runtime: 1 ms, faster than 94.74% of Java 
+// Time complexity :O(N) time to perform N/2 swaps.
 // Space complexity : O(N) to keep the recursion stack.
