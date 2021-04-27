@@ -1,27 +1,3 @@
-// 优先队列
-class Solution {
-    public int findKthLargest(int[] nums, int k) {
-        // init heap 'the smallest element poll first'
-        // 可写成PriorityQueue<Integer> pq = new PriorityQueue<Integer>((n1, n2) -> n1 - n2);
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
-        
-        for (int i = 0; i < nums.length; i++){
-            pq.offer(nums[i]);
-            if (pq.size() > k)
-                pq.poll();
-        }
-        int res = pq.poll();
-        return res;
-    }
-}
-// Runtime: 4 ms, faster than 59.63% of Java 
-// time: O(Nlogk)
-// 在heap中添加一个元素是O(logk)，一共操作N次
-
-
-
-
-// 用Quick Select来解决
 class Solution {
     public int findKthLargest(int[] nums, int k) {
         if (nums == null || nums.length == 0) return 0;
@@ -61,5 +37,27 @@ class Solution {
         return left;
     }
 }
-// Runtime: 8 ms, faster than 22.99% of Java
-// Time: 平摊O(n),最坏O(n^2)
+
+
+
+
+public int partition(int[] nums, int l, int r, int rank) {
+    int left = l, right = r;
+    int pivot = nums[left];
+
+    while (left < right) {
+        while (left < right && nums[right] >= pivot)
+            right--;
+        nums[left] = nums[right];
+        while (left < right && nums[left] <= pivot)
+            left++;
+        nums[right] = nums[left];
+    }
+    
+    if (left - l == rank)
+        return pivot;
+    else if (left - l < rank)
+        return partition(nums, left + 1, r, rank - (left - l + 1));
+    else
+        return partition(nums, l, right - 1, rank);
+}

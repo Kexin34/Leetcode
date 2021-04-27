@@ -1,20 +1,25 @@
-//  solving from the end, which avoid extra moving manipulation.
 class Solution {
     public void merge(int[] nums1, int m, int[] nums2, int n) {
-        int p1 = m - 1;
-        int p2 = n - 1;
-        int k = m + n - 1;
+        // Make a copy of nums1.
+        int[] aux = new int[m];
+        for (int i = 0; i < m; i++) aux[i] = nums1[i];
         
-        while (p1 >= 0 && p2 >= 0) {
-            if (nums1[p1] > nums2[p2])
-                nums1[k--] = nums1[p1--];
-            else
-                nums1[k--] = nums2[p2--];
-        }
+        // Two get pointers for nums1_copy and nums2.
+        int i = 0, j = 0;
+        // Set pointer for nums1
+        int k = 0;
         
-        while (p2 >= 0){   //only need to combine with remaining nums2
-            nums1[k--] = nums2[p2--];
-        }
+        // Compare elements from nums1_copy and nums2
+        while ((i < m) && (j < n))
+            nums1[k++] = (aux[i] < nums2[j]) ? aux[i++] : nums2[j++];
+        
+        // if there are still elements to add
+        if (i < m)
+            while (i < m) nums1[k++] = aux[i++];
+        if (j < n)
+            while (j < n) nums1[k++] = nums2[j++];
     }
 }
-//  0 ms, faster than 100.00% of Java
+// faster than 100.00% of Java
+// Time complexity : O(n+m).
+// Space complexity : O(m).

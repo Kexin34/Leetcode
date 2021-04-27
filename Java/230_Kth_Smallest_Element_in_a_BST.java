@@ -20,31 +20,30 @@ class Solution {
 
 // 中序遍历解法(适合：k比较小的时候，可以提早结束，也适合不稳定（随时插入删除的树）
 class Solution {
-    private int count;
-    private int val;
+    int res = 0;
+    int cnt = 0;
+    
     public int kthSmallest(TreeNode root, int k) {
-        count = 0;
         inOrder(root, k);
-        return val;
+        return res;
     }
     //标准中序遍历
     //count：当前节点在数组中的位置，因为已经遍历完所有左侧count个节点 
     //count == k表示当前遍历的节点是第k小节点
-    public void inOrder(TreeNode node, int k){
-        if (node == null) return;
-        // 左
-        inOrder(node.left, k);
-        // 中
-        count++;
-        if (k == count){
-            val = node.val;
+    private void inOrder(TreeNode root, int k){
+        if (root == null) return;
+        inOrder(root.left, k);
+        
+        cnt++;
+        if (cnt == k){
+            res = root.val;
             return;
         }
-        // 右
-        inOrder(node.right, k);
+            
+        inOrder(root.right, k);
     }
 }
-//faster than 54.65% of Java
+// Runtime: 0 ms, faster than 100.00% of Java 
 
 
 
