@@ -37,7 +37,8 @@ class Solution {
             maxCntNums.clear();
             maxCntNums.add(node.val);
         }
-        prev = node; 
+        prev = node;
+         
         inOrder(node.right, maxCntNums);
     }
 }

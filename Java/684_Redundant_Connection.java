@@ -133,3 +133,51 @@ class Solution {
         }
     }
 }
+
+
+
+
+
+// 自己写的简化UnionFind
+class Solution {
+    public int[] findRedundantConnection(int[][] edges) {
+        int[] res = new int[2];
+        int n = edges.length;
+        UnionFind uf = new UnionFind(n + 1);
+        
+        for (int[] edge : edges) {
+            int u = edge[0], v = edge[1];
+            if (uf.find(u) != uf.find(v))
+                uf.union(u, v);
+            else{
+                res[0] = u;
+                res[1] = v;
+            }   
+        }
+        return res;
+    }
+    
+    class UnionFind {
+        int[] parent;
+        public UnionFind(int n) {
+            parent = new int[n];
+            for (int i = 0; i < n; i++){
+                parent[i] = i;
+            }
+        }
+        
+        public int find(int x) {
+            if (parent[x] == x)
+                return parent[x];
+            return parent[x] = find(parent[x]);
+        }
+        
+        public void union (int x, int y) {
+            int root_x = find(x);
+            int root_y = find(y);
+            if (root_x != root_y)
+                parent[root_x] = root_y;
+        }
+    }
+}
+// Runtime: 1 ms, faster than 61.07% of Java

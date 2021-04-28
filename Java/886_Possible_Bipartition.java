@@ -48,7 +48,7 @@ class Solution {
     public boolean possibleBipartition(int N, int[][] dislikes) {
         int[] colors = new int[N + 1];
         // 建立邻接链表
-        List<List<Integer>> adj = new ArrayList<>(N + 1);
+        List<List<Integer>> adj = new ArrayList<>();
         for(int i = 0; i <= N; i++) 
             adj.add(new ArrayList<Integer>());
         

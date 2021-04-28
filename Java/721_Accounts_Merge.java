@@ -29,8 +29,8 @@ class Solution {
             }
         }
         
-        // Step 2: traverse every email list, find the parent of current list
-        // index and put all emails into the set list that belongs to key of its parent index
+        // Step 2: traverse every email list, find the parent of current list index
+        //  and put all emails into the set list that belongs to key of its parent index
         // 遍历每一个账号，首先对帐号的第一个邮箱调用 find 函数，得到其父串p，然后遍历之后的邮箱.
         // 将相同账号内的所有邮箱都链接起来了。
         for (int i = 0; i < n; i++){

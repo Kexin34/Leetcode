@@ -56,7 +56,7 @@ public double[] calcEquation(String[][] equations, double[] values, String[][] q
 
 /*************************************************************************************************************/
 
-// Union Find 解法（我copy过来的）
+// Union Find 解法
 
 class Solution {
     public double[] calcEquation(String[][] equations, double[] values, String[][] queries) {
@@ -95,7 +95,7 @@ class Solution {
             String p1 = find(parent, ratio, s1);
             String p2 = find(parent, ratio, s2);
             parent.put(p1, p2);
-            ratio.put(p1, val * ratio.get(s2) / ratio.get(s1));
+            ratio.put(p1, val * ratio.get(s2) / ratio.get(s1)); // 易错点
     }
     
     private String find(Map<String, String> parent, Map<String, Double> ratio, String s) {
@@ -107,5 +107,8 @@ class Solution {
         parent.put(s, grandpa);
         ratio.put(s, ratio.get(s) * ratio.get(father));
         return grandpa;
-    }
+    }  
 }
+
+// Runtime: 0 ms, faster than 100.00% of Java
+
