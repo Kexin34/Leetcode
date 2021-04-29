@@ -33,6 +33,39 @@ class Solution {
             max = Math.max(n, max);
         return max;
     }
-    
 }
+// Runtime: 15 ms, faster than 59.14% of Java
 
+
+// 九章二分模板，找左边边界
+class Solution {
+    public int minEatingSpeed(int[] piles, int h) {
+        int l = 1, r = getMax(piles); // speed可能性是在1-max_value之间
+        while (l + 1 < r) {
+            int mid = l + (r - l) / 2;
+            if (canFinish(piles, mid, h)) {
+                r = mid;
+            }else
+                l = mid;
+        }
+        if (canFinish(piles, l, h)) 
+            return l;
+        else
+            return r;
+    }
+    
+    private int getMax(int[] arr) {
+        int max = Integer.MIN_VALUE;
+        for (int num : arr)
+            max = Math.max(max, num);
+        return max;
+    }
+    
+    private boolean canFinish(int[] piles, int speed, int h) {
+        int time = 0;
+        for (int n : piles)
+            time += (n / speed) + (n % speed > 0 ? 1 : 0);
+        return time <= h;
+    }
+}
+// Runtime: 15 ms, faster than 59.14% of Java

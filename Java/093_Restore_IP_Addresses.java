@@ -31,20 +31,20 @@ public class Solution {
 //解法: Backtracking (DFS)
 class Solution {
     public List<String> restoreIpAddresses(String s) {
-        List<String> addresses = new ArrayList<>();
-        if (s == null || s.length() == 0)return addresses;
+        List<String> res = new ArrayList<>();
+        if (s == null || s.length() == 0) return res;
 
-        StringBuilder tempAddress = new StringBuilder();    //用作递归链
-        helper(0, tempAddress, addresses, s);
-        return addresses;
+        StringBuilder path = new StringBuilder();    //用作递归链
+        helper(0, path, res, s);
+        return res;
     }
     
-    private void helper(int k, StringBuilder tempAddress, List<String> addresses, String s){
+    private void helper(int k, StringBuilder path, List<String> res, String s){
         if (k == 4 || s.length() == 0){
             if(k == 4 && s.length() == 0){
                 // 如果k = 4，则表示三个点已经加入完成，四段已经形成，
                 // 若这时字符串刚好为空，则将当前分好的结果保存
-                addresses.add(tempAddress.toString());
+                res.add(path.toString());
             }
             return;
         }
@@ -52,18 +52,18 @@ class Solution {
         /* 若k != 0, 则对于每一段，我们分别用一位，两位，三位来尝试，分别判断其合不合法
             如果合法，则调用递归继续分剩下的字符串，最终和求出所有合法组合*/
         for (int i = 0; i < s.length() && i <= 2; i++){         //把从目前到末尾的subString递归
-            if (i != 0 && s.charAt(0) == '0')break;
+            if (i != 0 && s.charAt(0) == '0') break;
 
-            String part = s.substring(0, i + 1);
-            if (Integer.valueOf(part) <= 255){       //每段数字必须小于255，不然为invalid
-                if (tempAddress.length() != 0)      // 若递归链有东西
-                    part = "." + part;              // 放入dot
-                tempAddress.append(part);           // 加入到递归链里面
+            String section = s.substring(0, i + 1);
+            if (Integer.valueOf(section) > 255) continue;       //每段数字必须小于255，不然为invalid
+            
+            if (path.length() != 0)                             // 若递归链有东西,放入dot
+                section = "." + section;              
+            path.append(section);                               // 加入到递归链里面
 
-                helper(k + 1, tempAddress, addresses, s.substring(i + 1)); // 递归继续处理下一个
-                // 回溯
-                tempAddress.delete(tempAddress.length() - part.length(), tempAddress.length());
-            }
+            helper(k + 1, path, res, s.substring(i + 1)); // 递归继续处理下一个
+            // 回溯
+            path.delete(path.length() - section.length(), path.length());
         }
     }
 }

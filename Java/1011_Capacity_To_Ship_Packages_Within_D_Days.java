@@ -46,3 +46,54 @@ class Solution {
 }
 
 // faster than 35.59% of Java 
+
+
+
+
+// 自己用九章二分搜索模板写的
+class Solution {
+    public int shipWithinDays(int[] weights, int D) {
+        int l = getMax(weights), r = getSum(weights);
+        while (l + 1 < r) {
+            int mid = l + (r - l) / 2;
+            if (valid(weights, mid, D))
+                r = mid;
+            else
+                l = mid;
+        }
+        if (valid(weights, l, D))
+            return l;
+        else 
+            return r;
+    }
+    
+    private boolean valid(int[] arr, int cap, int D) {
+        int i = 0;
+        int day = 1;
+        int sameDatSum = 0;
+        while (i < arr.length) {
+            if (sameDatSum + arr[i] > cap){
+                day++;
+                sameDatSum = 0;
+            }else{
+                sameDatSum += arr[i];
+                i++;
+            }
+        }
+        return day <= D;
+    }
+    
+    private int getSum(int[]weights){
+        int sum = 0;
+        for(int num: weights)
+            sum += num;
+        return sum;
+    }
+    
+    private int getMax(int[]weights) {
+        int max = Integer.MIN_VALUE;
+        for(int num: weights)
+            max = Math.max(max, num);
+        return max;
+    }
+}

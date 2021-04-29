@@ -6,7 +6,7 @@ class Solution {
         Set<String> dead = new HashSet<>();
         for (String d : deadends) 
             dead.add(d);
-        if (dead.contains(start)) return -1;
+        if (dead.contains(start) || dead.contains(start)) return -1;
         
         // BFS 模板
         Queue<String> queue = new LinkedList<>();
@@ -20,10 +20,6 @@ class Solution {
             for (int s = 0; s < size; s++){
                 // 先检查本层的node
                 String node = queue.poll();
-                if(dead.contains(node)) {
-                    size --;
-                    continue;
-                }
                 if (node.equals(target)) return steps; // 到达！
                 
                 /* 四个转轮，每一个可以上下传动一格 */
