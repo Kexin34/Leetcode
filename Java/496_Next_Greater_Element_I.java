@@ -1,4 +1,4 @@
-// 解法：单调栈
+// 解法：单调栈 + 哈希表
 
 class Solution {
     public int[] nextGreaterElement(int[] nums1, int[] nums2) {

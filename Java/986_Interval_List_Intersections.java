@@ -9,11 +9,12 @@ class Solution {
         while(i < A.length && j < B.length){
             int a1 = A[i][0],  a2 = A[i][1];
             int b1 = B[j][0], b2 = B[j][1];
-            //两个区间存在交集
+
+            //“相交”只有四种情况，只需要满足两个条件
             if (b2 >= a1 && a2 >= b1)
-                //计算出交集，加入 res
-                res.add(new int[]{Math.max(a1,b1), Math.min(a2, b2)});
-            //指针前进
+                res.add(new int[]{Math.max(a1,b1), Math.min(a2, b2)});//计算出交集
+            
+            // i对应区间已经用完，移动指针
             if (b2 < a2)
                 j += 1;
             else
