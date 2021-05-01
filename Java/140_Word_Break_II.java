@@ -1,4 +1,7 @@
 // memorized DFS
+// Time complexity: O(2^n)
+// Space complexity: O(2^n)
+
 class Solution {
     protected Set<String> dict;
     protected HashMap<String, List<String>> memo = new HashMap<String, List<String>>();

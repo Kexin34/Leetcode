@@ -7,10 +7,11 @@ class NumMatrix {
         int m = matrix.length;
         int n = matrix[0].length;
         dp = new int[m + 1][n + 1]; // padding
-        for (int r = 0; r < m; r++)
-            for (int c = 0; c < n; c++)
-                //dp is padding by 1
-                dp[r + 1][c + 1] = dp[r][c + 1] + dp[r+1][c] - dp[r][c] + matrix[r][c];
+        for (int r = 1; r <= m; r++) {   //dp is padding by 1
+            for (int c = 1; c <= n; c++) {
+                dp[r][c] = dp[r - 1][c] + dp[r][c - 1] - dp[r - 1][c - 1] + matrix[r - 1][c - 1];
+            }
+        }
     }
     
     public int sumRegion(int row1, int col1, int row2, int col2) {

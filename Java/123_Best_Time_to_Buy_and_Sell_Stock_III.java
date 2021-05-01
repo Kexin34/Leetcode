@@ -10,7 +10,7 @@ class Solution {
         
         for (int i = 0; i < n; i++){
             for(int k = maxK; k > 0; k--){
-                if (i - 1 == -1){ /*处理 base case */
+                if (i == 0){ /*处理 base case */
                     dp[i][k][0] = 0;
                     dp[i][k][1] = -prices[i];
                     continue;

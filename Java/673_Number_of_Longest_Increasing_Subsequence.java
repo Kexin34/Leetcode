@@ -1,32 +1,37 @@
+// LIS DP
 class Solution {
     public int findNumberOfLIS(int[] nums) {
         int n = nums.length;
-        int res = 0;
-        int max_len = 0;
-        int[] LIS = new int[n];
-        int[] cnt = new int[n];
+        int[] dp = new int[n];// 通用的找LIS
+        int[] count = new int[n];
+        Arrays.fill(count, 1);
         
-        
-        for (int i = 0; i < n; i++){
-            LIS[i] = cnt[i] = 1;
-            for (int j = 0; j < i; j++){
-                if (nums[i] > nums[j]){
-                    if (LIS[i] == LIS[j] + 1) cnt[i] += cnt[j];
-                    if (LIS[i] < LIS[j] + 1){
-                        LIS[i] = LIS[j] + 1;
-                        cnt [i] = cnt[j];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) {
+                    if (dp[j] + 1 > dp[i]){//没用max，这说明找到更长的
+                        dp[i] = dp[j] + 1;
+                        count[i] = count[j];
+                    }else if (dp[j] + 1 == dp[i]) {// 找到同样长度的，数量增加
+                        count[i] += count[j];
                     }
-                }
+                }  
             }
-            if (max_len == LIS[i]) res += cnt[i];
-            if (max_len < LIS[i]){
-                max_len = LIS[i];
-                res = cnt[i];
-            }
+        }
+        // 找出最大长度
+        int maxLen = 0;
+        for (int len: dp)
+            maxLen = Math.max(maxLen, len);
+        
+        // 找出符合这个最大长度的LIS数量
+        int res = 0;
+        for (int i = 0; i < n; i++) {
+            if (dp[i] == maxLen)
+                res += count[i];
         }
         return res;
     }
 }
-
-// faster than 32.31% of Java 
+// Runtime: 19 ms, faster than 53.69% of Java
+// time：O(n^2)
 
