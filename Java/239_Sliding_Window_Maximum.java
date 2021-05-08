@@ -32,12 +32,59 @@ class Solution {
 
 
 
+/* ------------ 用linkedlist实现单调队列 ------- */
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        MonotonicQueue window = new MonotonicQueue();
+        List<Integer> res = new ArrayList<>();
+        
+        for (int i = 0; i < nums.length; i++) {
+            //先填满窗口的前 k - 1
+            if (i < k - 1)
+                window.push(nums[i]);
+            else {
+                window.push(nums[i]);  // 窗口向前滑动，加入新数字
+                res.add(window.max());  // 记录当前窗口的最大值
+                window.pop(nums[i - k + 1]);  // 移出旧数字
+            }
+        }
+        // 需要转成 int[] 数组再返回
+        int[] ans = new int[res.size()];
+        for (int i = 0; i < ans.length; i++)
+            ans[i] = res.get(i);
+        return ans;
+    }
+    
+    /* 单调队列的实现 */
+    class MonotonicQueue {
+        LinkedList<Integer> q = new LinkedList<>();
+        
+        public void push(int n) {
+            // 将小于 n 的元素全部删除
+            while (!q.isEmpty() && q.getLast() < n){
+                q.pollLast();
+            }
+            // 然后将 n 加入尾部
+            q.addLast(n);
+        }
+        
+        public int max() {
+            return q.getFirst();
+        }
+        
+        public void pop(int n) {
+            if (q.getFirst() == n) 
+                q.pollFirst();
+        }
+    }
+}
+// Runtime: 36 ms, faster than 30.32% of Java
 
 
 
 
-// Source: https://leetcode.com/problems/sliding-window-maximum/
 
+// 和上面一样的思路，只是用了Deque来实现单调队列
 class Solution {
     public int[] maxSlidingWindow(int[] nums, int k) {
         if (nums == null || k <= 0) {

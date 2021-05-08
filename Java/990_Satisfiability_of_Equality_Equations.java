@@ -92,3 +92,4 @@ class UF {
     	return rootP == rootQ;
     }
 }
+// Runtime: 2 ms, faster than 38.67% of Java

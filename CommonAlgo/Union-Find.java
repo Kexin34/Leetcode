@@ -62,6 +62,11 @@ class UnionFind {
 // 相应的，connected和union复杂度都下降为 O(1)。
 
 
+// Union-Find 算法的复杂度可以这样分析：构造函数初始化数据结构需要 O(N) 的时间和空间复杂度；
+// 连通两个节点union、判断两个节点的连通性connected、计算连通分量count所需的时间复杂度均为 O(1)。
+
+
+
 //find也可以写成：
 private int find(int x){
     if (parent[x] == x)

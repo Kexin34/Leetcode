@@ -79,22 +79,22 @@ class Twitter {
         // 先将所有链表头节点插入优先级队列
         for(int id : users){
             Tweet twt = userMap.get(id).tweet_head;
-            if (twt != null)
-                pq.add(twt);
+            if (twt == null) continue;
+            pq.add(twt);
         }
         
-        int n = 0;
-        while (!pq.isEmpty() && n < 10){// 最多返回 10 条就够了
-            Tweet twt = pq.poll();      // 弹出 time 值最大的（最近发表的）
+        while (!pq.isEmpty()) {
+            if (res.size() == 10) break;    // 最多返回 10 条就够了
+            Tweet twt = pq.poll();         // 弹出 time 值最大的（最近发表的）
             res.add(twt.id);
-            n++;
-            if(twt.next != null)        // 将下一篇 Tweet 插入进行排序
-                pq.add(twt.next);
+
+            // 将下一篇 Tweet 插入进行排序
+            if (twt.next != null) 
+                pq.offer(twt.next);
         }
         return res;
         
     }
-    
     
     /** Follower follows a followee. If the operation is invalid, it should be a no-op. */
     public void follow(int followerId, int followeeId) {
@@ -113,17 +113,10 @@ class Twitter {
     
     /** Follower unfollows a followee. If the operation is invalid, it should be a no-op. */
     public void unfollow(int followerId, int followeeId) {
-        if(!userMap.containsKey(followerId) || followerId==followeeId)
+        if(!userMap.containsKey(followerId) || followerId == followeeId)
             return;
         userMap.get(followerId).unfollow(followeeId);
     }
 }
 
-/**
- * Your Twitter object will be instantiated and called as such:
- * Twitter obj = new Twitter();
- * obj.postTweet(userId,tweetId);
- * List<Integer> param_2 = obj.getNewsFeed(userId);
- * obj.follow(followerId,followeeId);
- * obj.unfollow(followerId,followeeId);
- */
+// // Runtime: 9 ms, faster than 76.77% of Java

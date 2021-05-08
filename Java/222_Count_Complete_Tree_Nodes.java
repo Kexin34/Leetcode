@@ -1,3 +1,35 @@
+// 最优解：
+class Solution {
+    public int countNodes(TreeNode root) {
+        if (root == null) return 0;
+        // 记录左、右子树的高度
+        TreeNode l = root, r = root;
+        int hl = 0, hr = 0;
+        
+        while (l != null) {
+            hl++;
+            l = l.left;
+        }
+        while (r != null) {
+            hr++;
+            r = r.right;
+        }
+        // 如果左右子树的高度相同，则是一棵满二叉树
+        if (hl == hr)
+            return (int)Math.pow(2, hr) - 1;
+        // 如果左右高度不同，则按照普通二叉树的逻辑计算
+        return 1 + countNodes(root.left) + countNodes(root.right);
+    }
+}
+// Runtime: 0 ms, faster than 100.00% of Java
+// O(logN*logN), 递归深度就是树的高度 O(logN)，每次递归所花费的时间就是 while 循环，需要 O(logN)，
+// 所以总体的时间复杂度是 O(logN*logN)
+
+
+
+
+
+
 // 解法一：递归 （最简单直接）
 // 本解法没有利用原题是”完整“二叉树，普通无序二叉树也可用一下方法
 
