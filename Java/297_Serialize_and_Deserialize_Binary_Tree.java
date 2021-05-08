@@ -1,3 +1,60 @@
+// 递归，前序遍历解法
+public class Codec {
+    String SEP = ",";
+    String NULL = "#";
+    
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        StringBuilder sb = new StringBuilder();
+        serialize(root, sb);
+        return sb.toString();
+    }
+    // 辅助函数，将二叉树存入stringbuilder
+    private void serialize(TreeNode root, StringBuilder sb) {
+        if (root == null) {
+            sb.append(NULL).append(SEP);
+            return;
+        }
+        /***** 前序遍历位置 *****/
+        sb.append(root.val).append(SEP);
+        
+        serialize(root.left, sb);
+        serialize(root.right, sb);
+    }
+
+    // 主函数，将字符串转化为二叉树结构
+    public TreeNode deserialize(String data) {
+        LinkedList<String> nodes = new LinkedList<>();
+        for (String s : data.split(SEP))
+            nodes.add(s);
+        
+        return deserialize(nodes);
+    }
+    
+    // 辅助函数，通过nodes列表构造二叉树
+    private TreeNode deserialize(LinkedList<String> nodes) {
+        if (nodes.isEmpty()) return null;
+        
+        /***** 前序遍历位置 *****/
+        // 列表最左侧就是根节点
+        String first = nodes.removeFirst();
+        if (first.equals(NULL)) return null;
+        TreeNode root = new TreeNode(Integer.parseInt(first));
+        /*******************/
+        
+        root.left = deserialize(nodes);
+        root.right = deserialize(nodes);
+        return root;
+    }
+}
+// Runtime: 6 ms, faster than 94.20% of Java
+
+
+
+
+
+// 层次遍历解法
+
 public class Codec {
 
     // Encodes a tree to a single string.BFS层次遍历来序列化
