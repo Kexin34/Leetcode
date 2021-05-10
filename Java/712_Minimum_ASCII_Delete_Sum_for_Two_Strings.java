@@ -1,36 +1,49 @@
-// (不成功的）（内存溢出）Recursion with memorization
+// 1、Recursion with memorization
 class Solution {
-    int[][]memo;
-        
+    int[][] memo;
     public int minimumDeleteSum(String s1, String s2) {
-        int l1 = s1.length(), l2 = s2.length();
-        memo = new int[l1 + 1][l2 + 1];
-        for (int[] row: memo)
-            Arrays.fill(row, Integer.MAX_VALUE);
-        return dp(s1, s2);
+        // 备忘录值为 -1 代表未曾计算
+        memo = new int[s1.length()][s2.length()];
+        for (int[] row : memo)
+            Arrays.fill(row, -1);
+        
+        return dp(s1, 0, s2, 0);
     }
-    
-    public int dp(String s1, String s2){
-        int i = s1.length(), j = s2.length();
-        if (i == 0 && j == 0) return 0;
-        if (memo[i][j] != Integer.MAX_VALUE) return memo[i][j];
-        if (i == 0) // Case1: s1 is empty.
-            return memo[i][j] = dp(s1, s2.substring(j - 1)) + s2.charAt(j - 1);
-        if (j == 0) // Case2: s2 is empty.
-            return memo[i][j] = dp(s1.substring(i - 1), s2) + s1.charAt(i - 1);
-        if (s1.charAt(i - 1) == s2.charAt(j - 1)) // Case3: skip s1[i-1] / s2[j-1]
-            return memo[i][j] = dp(s1.substring(i - 1), s2.substring(j - 1));
-        
-        //else not equal, find the min(del s1[i-1], del s2[j-1])
-        return memo[i][j] = Math.min(dp(s1.substring(i - 1), s2) + s1.charAt(i - 1), 
-                                    dp(s1, s2.substring(j - 1) + s2.charAt(j - 1)));
-        
+    // 定义：将 s1[i..] 和 s2[j..] 删除成相同字符串，
+    // 最小的 ASCII 码之和为 dp(s1, i, s2, j)。
+    public int dp(String s1, int i, String s2, int j) {
+        int res = 0;
+        int m = s1.length(), n = s2.length();
+        // base case
+        if (i == m) {               // 如果 s1 到头了，那么 s2 剩下的都得删除
+            for (;j < n; j++)
+                res += s2.charAt(j);
+            return res;
+        }
+        if (j == n) {               // 如果 s2 到头了，那么 s1 剩下的都得删除
+            for (; i < m; i++) 
+                res += s1.charAt(i);
+            return res;
+        }
+        if (memo[i][j] != -1)
+            return memo[i][j];
+        if (s1.charAt(i) == s2.charAt(j))
+            // s1[i] 和 s2[j] 都是在 lcs 中的，不用删除
+            memo[i][j] = dp(s1, i + 1, s2, j + 1);
+        else {
+            // s1[i] 和 s2[j] 至少有一个不在 lcs 中，删一个
+            memo[i][j] = Math.min(
+                s1.charAt(i) + dp(s1, i + 1, s2, j),  // s1[i]不在
+                s2.charAt(j) + dp(s1, i, s2, j + 1)); // s2[j]不在
+        }
+        return memo[i][j];
     }
 }
+// Runtime: 30 ms, faster than 21.73% of Java 
 
 
 
-// DP 
+// DP  Table （更快）
 class Solution {
     public int minimumDeleteSum(String s1, String s2) {
         int l1 = s1.length();
@@ -60,3 +73,6 @@ class Solution {
 // faster than 87.21% of Java
 // Time complexity: O(l1 * l2)
 // Space complexity: O(l1 * l2)
+
+
+
