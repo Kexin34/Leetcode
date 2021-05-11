@@ -6,7 +6,6 @@ class Solution {
         // 推导：dp[i] = OR(dp[j],j<i&&j能跳到i) 判断之前所有的点最后一跳是否能跳到当前点
         // 初始化：dp[0] = 0
         // 结果： dp[n-1]
-        
         int n = nums.length;
         if (n == 1) return true;
         
