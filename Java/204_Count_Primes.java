@@ -22,13 +22,12 @@ boolean isPrime(int n) {
 class Solution {
     public int countPrimes(int n) {
         boolean[] isPrime = new boolean[n];
-        // 将数组都初始化为 true
-        Arrays.fill(isPrime, true);
+        Arrays.fill(isPrime, true);// 将数组都初始化为 true
 
         for(int i = 2; i * i < n; i++){
             if(isPrime[i]){
                  // i 的倍数不可能是素数了
-                for(int j = i*i; j<n; j+=i)
+                for(int j = i * i; j < n; j += i)
                     isPrime[j] = false;
             }
         }
@@ -40,6 +39,7 @@ class Solution {
         return count;
     }
 }
+// Runtime: 52 ms, faster than 24.66% of Java
 
 
 
